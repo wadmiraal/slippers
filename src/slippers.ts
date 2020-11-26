@@ -1,6 +1,21 @@
 (function () {
   type Args = [Config | BaseElement, ...Array<BaseElement>];
 
+  type CanvasLineInstruction = [
+    (x: number, y: number, ctx: CanvasRenderingContext2D) => void,
+    number,
+    number
+  ];
+
+  type CanvasCircleInstruction = [
+    (x: number, y: number, r: number, ctx: CanvasRenderingContext2D) => void,
+    number,
+    number,
+    number
+  ];
+
+  type CanvasInstruction = CanvasLineInstruction | CanvasCircleInstruction;
+
   type Config = Partial<
     Omit<VisualElement, "delete" | "getConfig" | "getHTMLElement">
   > &
@@ -8,12 +23,17 @@
     Partial<
       Pick<TextElement, "text" | "size" | "font" | "color" | "bold" | "italic">
     > &
-    Partial<Pick<Timer, "do" | "inc">> &
-    Partial<Pick<Button, "do">>;
+    Partial<Pick<Timer, "do" | "freq">> &
+    Partial<Pick<Button, "do">> &
+    Partial<Pick<Canvas, "color" | "lineWidth">> &
+    Partial<Pick<Keyboard, "up">>;
 
+  /**
+   * Helpers
+   */
   function handleContainerArgs([first, ...rest]: Args): [
     Config | null,
-    BaseElement[]
+    Array<BaseElement | CanvasInstruction>
   ] {
     if (
       (first as any).width !== undefined ||
@@ -24,7 +44,7 @@
     ) {
       return [first as Config, rest];
     } else {
-      return [null, [first as BaseElement, ...rest]];
+      return [null, [first as BaseElement | CanvasInstruction, ...rest]];
     }
   }
 
@@ -32,6 +52,25 @@
     return Number(value.replace(/^(\d+).*/, "$1"));
   }
 
+  function isBaseElement(o: BaseElement | CanvasInstruction): o is BaseElement {
+    return (o as any).delete !== undefined;
+  }
+
+  function isCanvasInstruction(
+    o: BaseElement | CanvasInstruction
+  ): o is CanvasInstruction {
+    return (o as any).length === 3 && typeof (o as any)[1] === "number";
+  }
+
+  function isCanvasLineInstruction(
+    o: CanvasInstruction
+  ): o is CanvasLineInstruction {
+    return o.length === 3;
+  }
+
+  /**
+   * Base classes
+   */
   class BaseElement {
     protected el: HTMLElement;
 
@@ -64,6 +103,15 @@
       if (config.borderWidth !== undefined) {
         this.borderWidth = config.borderWidth;
       }
+      if (config.borderStyle !== undefined) {
+        this.borderStyle = config.borderStyle;
+      } else if (
+        config.borderWidth !== undefined ||
+        config.borderRadius !== undefined ||
+        config.borderColor !== undefined
+      ) {
+        this.borderStyle = "solid";
+      }
       if (config.left !== undefined) {
         this.left = config.left;
       }
@@ -92,6 +140,14 @@
 
     get borderColor() {
       return this.el.style.borderColor;
+    }
+
+    set borderStyle(value: string) {
+      this.el.style.borderStyle = value;
+    }
+
+    get borderStyle() {
+      return this.el.style.borderStyle;
     }
 
     set borderWidth(value: number) {
@@ -222,8 +278,9 @@
     constructor(tagName: string, config: Config) {
       super(tagName, config);
 
-      this.el.style.display = "relative";
-
+      if (config.left === undefined && config.top === undefined) {
+        this.el.style.position = "relative";
+      }
       if (config.align) {
         this.align = config.align;
       }
@@ -246,6 +303,9 @@
     }
   }
 
+  /**
+   * Components
+   */
   class App extends ContainerElement {
     constructor(...args: Args) {
       const [config, children] = handleContainerArgs(args);
@@ -260,7 +320,9 @@
       }
 
       children.forEach((child) => {
-        this.append(child);
+        if (isBaseElement(child)) {
+          this.append(child);
+        }
       });
 
       document.body.append(this.el);
@@ -303,6 +365,102 @@
     }
   }
 
+  class Canvas extends ContainerElement {
+    protected ctx: CanvasRenderingContext2D | null;
+
+    constructor(...args: Args) {
+      const [config, children] = handleContainerArgs(args);
+      super("CANVAS", config || {});
+
+      this.ctx = (this.el as HTMLCanvasElement).getContext("2d");
+
+      if (this.ctx === null) {
+        // TODO
+        return;
+      }
+
+      this.color = config?.color || "black";
+      this.lineWidth = config?.lineWidth || 1;
+
+      children.forEach((child) => {
+        if (isCanvasInstruction(child)) {
+          this.add(child);
+        }
+      });
+    }
+
+    add(...children: Array<CanvasInstruction>) {
+      children.forEach((child) => {
+        if (isCanvasLineInstruction(child)) {
+          const fn = child[0];
+          fn(child[1], child[2], this.ctx!);
+        } else {
+          const fn = child[0];
+          fn(child[1], child[2], child[3], this.ctx!);
+        }
+      });
+    }
+
+    set width(value: number) {
+      super.width = value;
+      this.el.setAttribute("width", value.toString());
+    }
+
+    set height(value: number) {
+      super.height = value;
+      this.el.setAttribute("height", value.toString());
+    }
+
+    set color(value: string) {
+      if (this.ctx) {
+        this.ctx.strokeStyle = value;
+      }
+    }
+
+    get color() {
+      return this.ctx ? this.ctx.strokeStyle.toString() : "black";
+    }
+
+    set lineWidth(value: number) {
+      if (this.ctx) {
+        this.ctx.lineWidth = value;
+      }
+    }
+
+    get lineWidth() {
+      return this.ctx ? this.ctx.lineWidth : 1;
+    }
+  }
+
+  let keyboardCount = 0;
+  class Keyboard extends BaseElement {
+    protected upCallback?: (key: string) => void;
+
+    constructor(config: Config) {
+      keyboardCount++;
+      super("SPAN");
+
+      this.el.style.display = "none";
+      this.el.className = "keyboard__" + keyboardCount;
+
+      this.upCallback = config.up;
+
+      document.addEventListener("keyup", (e: KeyboardEvent) => {
+        if (this.upCallback !== undefined) {
+          this.upCallback(e.key);
+        }
+      });
+    }
+
+    set up(callback: (key: string) => void) {
+      this.upCallback = callback;
+    }
+
+    get up() {
+      return this.upCallback || (() => {});
+    }
+  }
+
   class LineOfText extends TextElement {
     constructor(config: Config) {
       super("SPAN", config);
@@ -315,7 +473,9 @@
       super("P", config || {});
 
       children.forEach((child) => {
-        this.append(child);
+        if (isBaseElement(child)) {
+          this.append(child);
+        }
       });
     }
   }
@@ -326,14 +486,16 @@
       super("DIV", config || {});
 
       children.forEach((child) => {
-        this.append(child);
+        if (isBaseElement(child)) {
+          this.append(child);
+        }
       });
     }
   }
 
   let timerCount = 0;
   class Timer extends BaseElement {
-    protected increment: number;
+    protected frequency: number;
     protected callback?: (
       totalMs: number,
       ms: number,
@@ -350,19 +512,19 @@
       this.el.style.display = "none";
       this.el.className = "timer__" + timerCount;
 
-      this.increment = config.inc || 1000;
+      this.frequency = config.freq || 1000;
       this.ellapsed = 0;
       this.callback = config.do;
     }
 
-    set inc(value: number) {
-      this.increment = value;
+    set freq(value: number) {
+      this.frequency = value;
       this.stop();
       this.start();
     }
 
-    get inc() {
-      return this.increment;
+    get freq() {
+      return this.frequency;
     }
 
     set do(
@@ -383,7 +545,7 @@
       }
 
       this.timer = setInterval(() => {
-        this.ellapsed += this.increment;
+        this.ellapsed += this.frequency;
         if (this.callback !== undefined) {
           const minutes = Math.floor(this.ellapsed / 60000);
           const [seconds, milliseconds] = String(
@@ -396,7 +558,7 @@
             minutes
           );
         }
-      }, this.increment);
+      }, this.frequency);
     }
 
     stop() {
@@ -417,17 +579,70 @@
     }
   }
 
+  /**
+   * Special helper components
+   */
+  function moveTo(
+    x: number,
+    y: number,
+    ctx?: CanvasRenderingContext2D
+  ): CanvasInstruction | undefined {
+    if (ctx) {
+      ctx.moveTo(x, y);
+    } else {
+      return [moveTo, x, y];
+    }
+  }
+
+  function drawLine(
+    x: number,
+    y: number,
+    ctx?: CanvasRenderingContext2D
+  ): CanvasInstruction | undefined {
+    if (ctx) {
+      ctx.lineTo(x, y);
+      ctx.stroke();
+    } else {
+      return [drawLine, x, y];
+    }
+  }
+
+  function drawCircle(
+    x: number,
+    y: number,
+    r: number,
+    ctx?: CanvasRenderingContext2D
+  ): CanvasInstruction | undefined {
+    if (ctx) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arc(x, y, r, 0, 2 * Math.PI);
+      ctx.stroke();
+    } else {
+      return [drawCircle, x, y, r];
+    }
+  }
+
   // Expose components.
   (window as any).App = (...args: Args) => new App(...args);
   (window as any).Button = (config: Config) => new Button(config);
+  (window as any).Canvas = (...args: Args) => new Canvas(...args);
+  (window as any).Keyboard = (config: Config) => new Keyboard(config);
   (window as any).LineOfText = (config: Config) => new LineOfText(config);
   (window as any).Paragraph = (...args: Args) => new Paragraph(...args);
   (window as any).Section = (...args: Args) => new Section(...args);
   (window as any).Timer = (config: Config) => new Timer(config);
 
+  // Expose special helper components.
+  (window as any).moveTo = moveTo;
+  (window as any).drawLine = drawLine;
+  (window as any).drawCircle = drawCircle;
+
   // Expose constants.
+  (window as any).center = "center";
   (window as any).green = "green";
   (window as any).red = "red";
   (window as any).white = "white";
   (window as any).black = "black";
+  (window as any).lightGray = "lightgray";
 })();

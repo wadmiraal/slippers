@@ -1,5 +1,8 @@
 "use strict";
 (function () {
+    /**
+     * Helpers
+     */
     function handleContainerArgs([first, ...rest]) {
         if (first.width !== undefined ||
             first.height !== undefined ||
@@ -16,6 +19,18 @@
     function extractNumber(value) {
         return Number(value.replace(/^(\d+).*/, "$1"));
     }
+    function isBaseElement(o) {
+        return o.delete !== undefined;
+    }
+    function isCanvasInstruction(o) {
+        return o.length === 3 && typeof o[1] === "number";
+    }
+    function isCanvasLineInstruction(o) {
+        return o.length === 3;
+    }
+    /**
+     * Base classes
+     */
     class BaseElement {
         constructor(tagName) {
             this.el = document.createElement(tagName);
@@ -43,6 +58,14 @@
             if (config.borderWidth !== undefined) {
                 this.borderWidth = config.borderWidth;
             }
+            if (config.borderStyle !== undefined) {
+                this.borderStyle = config.borderStyle;
+            }
+            else if (config.borderWidth !== undefined ||
+                config.borderRadius !== undefined ||
+                config.borderColor !== undefined) {
+                this.borderStyle = "solid";
+            }
             if (config.left !== undefined) {
                 this.left = config.left;
             }
@@ -67,6 +90,12 @@
         }
         get borderColor() {
             return this.el.style.borderColor;
+        }
+        set borderStyle(value) {
+            this.el.style.borderStyle = value;
+        }
+        get borderStyle() {
+            return this.el.style.borderStyle;
         }
         set borderWidth(value) {
             this.el.style.borderWidth = String(value) + "px";
@@ -169,7 +198,9 @@
     class ContainerElement extends VisualElement {
         constructor(tagName, config) {
             super(tagName, config);
-            this.el.style.display = "relative";
+            if (config.left === undefined && config.top === undefined) {
+                this.el.style.position = "relative";
+            }
             if (config.align) {
                 this.align = config.align;
             }
@@ -187,6 +218,9 @@
             this.el.removeChild(e.getHTMLElement());
         }
     }
+    /**
+     * Components
+     */
     class App extends ContainerElement {
         constructor(...args) {
             const [config, children] = handleContainerArgs(args);
@@ -198,7 +232,9 @@
                 this.backgroundColor = "white";
             }
             children.forEach((child) => {
-                this.append(child);
+                if (isBaseElement(child)) {
+                    this.append(child);
+                }
             });
             document.body.append(this.el);
         }
@@ -228,6 +264,81 @@
             return this.clickCallback || (() => { });
         }
     }
+    class Canvas extends ContainerElement {
+        constructor(...args) {
+            const [config, children] = handleContainerArgs(args);
+            super("CANVAS", config || {});
+            this.ctx = this.el.getContext("2d");
+            if (this.ctx === null) {
+                // TODO
+                return;
+            }
+            this.color = (config === null || config === void 0 ? void 0 : config.color) || "black";
+            this.lineWidth = (config === null || config === void 0 ? void 0 : config.lineWidth) || 1;
+            children.forEach((child) => {
+                if (isCanvasInstruction(child)) {
+                    this.add(child);
+                }
+            });
+        }
+        add(...children) {
+            children.forEach((child) => {
+                if (isCanvasLineInstruction(child)) {
+                    const fn = child[0];
+                    fn(child[1], child[2], this.ctx);
+                }
+                else {
+                    const fn = child[0];
+                    fn(child[1], child[2], child[3], this.ctx);
+                }
+            });
+        }
+        set width(value) {
+            super.width = value;
+            this.el.setAttribute("width", value.toString());
+        }
+        set height(value) {
+            super.height = value;
+            this.el.setAttribute("height", value.toString());
+        }
+        set color(value) {
+            if (this.ctx) {
+                this.ctx.strokeStyle = value;
+            }
+        }
+        get color() {
+            return this.ctx ? this.ctx.strokeStyle.toString() : "black";
+        }
+        set lineWidth(value) {
+            if (this.ctx) {
+                this.ctx.lineWidth = value;
+            }
+        }
+        get lineWidth() {
+            return this.ctx ? this.ctx.lineWidth : 1;
+        }
+    }
+    let keyboardCount = 0;
+    class Keyboard extends BaseElement {
+        constructor(config) {
+            keyboardCount++;
+            super("SPAN");
+            this.el.style.display = "none";
+            this.el.className = "keyboard__" + keyboardCount;
+            this.upCallback = config.up;
+            document.addEventListener("keyup", (e) => {
+                if (this.upCallback !== undefined) {
+                    this.upCallback(e.key);
+                }
+            });
+        }
+        set up(callback) {
+            this.upCallback = callback;
+        }
+        get up() {
+            return this.upCallback || (() => { });
+        }
+    }
     class LineOfText extends TextElement {
         constructor(config) {
             super("SPAN", config);
@@ -238,7 +349,9 @@
             const [config, children] = handleContainerArgs(args);
             super("P", config || {});
             children.forEach((child) => {
-                this.append(child);
+                if (isBaseElement(child)) {
+                    this.append(child);
+                }
             });
         }
     }
@@ -247,7 +360,9 @@
             const [config, children] = handleContainerArgs(args);
             super("DIV", config || {});
             children.forEach((child) => {
-                this.append(child);
+                if (isBaseElement(child)) {
+                    this.append(child);
+                }
             });
         }
     }
@@ -259,17 +374,17 @@
             timerCount++;
             this.el.style.display = "none";
             this.el.className = "timer__" + timerCount;
-            this.increment = config.inc || 1000;
+            this.frequency = config.freq || 1000;
             this.ellapsed = 0;
             this.callback = config.do;
         }
-        set inc(value) {
-            this.increment = value;
+        set freq(value) {
+            this.frequency = value;
             this.stop();
             this.start();
         }
-        get inc() {
-            return this.increment;
+        get freq() {
+            return this.frequency;
         }
         set do(callback) {
             this.callback = callback;
@@ -284,13 +399,13 @@
                 this.stop();
             }
             this.timer = setInterval(() => {
-                this.ellapsed += this.increment;
+                this.ellapsed += this.frequency;
                 if (this.callback !== undefined) {
                     const minutes = Math.floor(this.ellapsed / 60000);
                     const [seconds, milliseconds] = String((this.ellapsed % 60000) / 1000).split(".");
                     this.callback(this.ellapsed, Number(milliseconds), Number(seconds), minutes);
                 }
-            }, this.increment);
+            }, this.frequency);
         }
         stop() {
             if (this.timer) {
@@ -307,16 +422,55 @@
             this.start();
         }
     }
+    /**
+     * Special helper components
+     */
+    function moveTo(x, y, ctx) {
+        if (ctx) {
+            ctx.moveTo(x, y);
+        }
+        else {
+            return [moveTo, x, y];
+        }
+    }
+    function drawLine(x, y, ctx) {
+        if (ctx) {
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        }
+        else {
+            return [drawLine, x, y];
+        }
+    }
+    function drawCircle(x, y, r, ctx) {
+        if (ctx) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.arc(x, y, r, 0, 2 * Math.PI);
+            ctx.stroke();
+        }
+        else {
+            return [drawCircle, x, y, r];
+        }
+    }
     // Expose components.
     window.App = (...args) => new App(...args);
     window.Button = (config) => new Button(config);
+    window.Canvas = (...args) => new Canvas(...args);
+    window.Keyboard = (config) => new Keyboard(config);
     window.LineOfText = (config) => new LineOfText(config);
     window.Paragraph = (...args) => new Paragraph(...args);
     window.Section = (...args) => new Section(...args);
     window.Timer = (config) => new Timer(config);
+    // Expose special helper components.
+    window.moveTo = moveTo;
+    window.drawLine = drawLine;
+    window.drawCircle = drawCircle;
     // Expose constants.
+    window.center = "center";
     window.green = "green";
     window.red = "red";
     window.white = "white";
     window.black = "black";
+    window.lightGray = "lightgray";
 })();

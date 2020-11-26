@@ -1,7 +1,7 @@
 App(
   width: 300
   height: 300
-  align: "center"
+  align: center
 
   Button(
     text: "Start"
@@ -28,12 +28,12 @@ App(
     bold: yes
     size: 16
     do: () ->
-      text.text = "0:00.000";
+      text.text = "00:00.000";
       timer.reset()
   )
 
   timer = Timer(
-    inc: 10
+    freq: 10
     do: (_, ms, s, m) ->
       if ms.toString().length == 1
         millis = "00" + ms
@@ -52,8 +52,9 @@ App(
     align: "center"
     
     text = LineOfText(
-      text: "0:00.000"
+      text: "00:00.000"
       size: 32
+      font: "sans-serif"
     )
   )
 )

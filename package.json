@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "build:lib": "tsc",
-    "build:examples": "coffee --compile --bare --output build/examples/ examples/*.coffee",
+    "build:examples": "coffee --compile --bare --output dist/examples/ examples/*.coffee",
     "build": "npm run build:lib && npm run build:examples",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
