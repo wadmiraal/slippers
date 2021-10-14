@@ -1,3 +1,5 @@
+word = "slippers".split("");
+
 app = App(
   width: 800
   height: 400
@@ -50,7 +52,6 @@ app = App(
 
 letters = {}
 guessed = {}
-word = "slippers".split("");
 
 for letter, i in word
   do(letter, i) ->
