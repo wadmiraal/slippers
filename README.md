@@ -1,7 +1,7 @@
 Slippers
 ========
 
-Inspired by _why's [Shoes](http://shoesrb.com/). How can we make programming simple and fun in today's web-dominated world?
+Inspired by _why's [Shoes](http://shoesrb.com/) and [ART && CODE talk](https://vimeo.com/5047563). How can we make programming simple and fun in today's web-dominated world?
 
 
 Manifesto
