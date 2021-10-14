@@ -3,6 +3,8 @@ Slippers
 
 Inspired by _why's [Shoes](http://shoesrb.com/) and [ART && CODE talk](https://vimeo.com/5047563). How can we make programming simple and fun in today's web-dominated world?
 
+See some examples [here](https://wadmiraal.github.io/slippers/dist/index.html).
+
 
 Manifesto
 =========
