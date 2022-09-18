@@ -1,13 +1,16 @@
-import { Config } from "../types";
-import { TextElement } from "./TextElement";
+import { TextElement, TextElementConfig } from "./TextElement";
+
+export interface ButtonConfig extends TextElementConfig {
+  do?: () => void;
+}
 
 export class Button extends TextElement {
   protected clickCallback?: () => void;
 
-  constructor(config: Config) {
+  constructor(config: ButtonConfig) {
     super("BUTTON", config);
 
-    this.clickCallback = config.do;
+    this.do = config.do;
 
     this.el.addEventListener("click", () => {
       this.clickCallback && this.clickCallback();
@@ -25,11 +28,11 @@ export class Button extends TextElement {
     }
   }
 
-  set do(callback: () => void) {
+  set do(callback: ButtonConfig["do"]) {
     this.clickCallback = callback;
   }
 
-  get do() {
-    return this.clickCallback || (() => {});
+  get do(): ButtonConfig["do"] {
+    return this.clickCallback;
   }
 }

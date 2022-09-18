@@ -1,12 +1,14 @@
-import { Config } from "../types";
 import { BaseElement } from "./BaseElement";
-import { VisualElement } from "./VisualElement";
+import { VisualElement, VisualElementConfig } from "./VisualElement";
+
+export interface ContainerElementConfig extends VisualElementConfig {
+  align?: "left" | "center" | "right";
+}
 
 export class ContainerElement extends VisualElement {
-  constructor(tagName: string, config?: Config) {
+  constructor(tagName: string, config?: ContainerElementConfig) {
     super(tagName, config);
 
-    this.el.style.position = "relative";
     if (config?.align) {
       this.align = config.align;
     }

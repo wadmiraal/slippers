@@ -1,13 +1,10 @@
 import { BaseElement } from "./elements/BaseElement";
-import { Button } from "./elements/Button";
-import { Canvas } from "./elements/Canvas";
-import { ContainerElement } from "./elements/ContainerElement";
-import { Keyboard } from "./elements/Keyboard";
-import { TextElement } from "./elements/TextElement";
-import { Timer } from "./elements/Timer";
-import { VisualElement } from "./elements/VisualElement";
+import { ContainerElementConfig } from "./elements/ContainerElement";
 
-export type Args = [Config | BaseElement, ...Array<BaseElement>];
+export type Args<T = ContainerElementConfig> = [
+  T | BaseElement,
+  ...Array<BaseElement>
+];
 
 export type CanvasLineInstruction = [
   (x: number, y: number, ctx: CanvasRenderingContext2D) => void,
@@ -23,15 +20,3 @@ export type CanvasCircleInstruction = [
 ];
 
 export type CanvasInstruction = CanvasLineInstruction | CanvasCircleInstruction;
-
-export type Config = Partial<
-  Omit<VisualElement, "delete" | "getConfig" | "getHTMLElement">
-> &
-  Partial<Pick<ContainerElement, "align">> &
-  Partial<
-    Pick<TextElement, "text" | "size" | "font" | "color" | "bold" | "italic">
-  > &
-  Partial<Pick<Timer, "do" | "freq">> &
-  Partial<Pick<Button, "do">> &
-  Partial<Pick<Canvas, "color" | "lineWidth">> &
-  Partial<Pick<Keyboard, "up">>;

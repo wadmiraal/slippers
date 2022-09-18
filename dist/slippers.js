@@ -134,7 +134,6 @@
   var ContainerElement = class extends VisualElement {
     constructor(tagName, config) {
       super(tagName, config);
-      this.el.style.position = "relative";
       if (config == null ? void 0 : config.align) {
         this.align = config.align;
       }
@@ -161,6 +160,7 @@
       this.el.style.overflow = "hidden";
       this.el.style.margin = "20px auto";
       this.el.style.padding = "5px";
+      this.el.style.position = "relative";
       if ((config == null ? void 0 : config.backgroundColor) === void 0) {
         this.backgroundColor = "white";
       }
@@ -189,10 +189,10 @@
       if (config == null ? void 0 : config.color) {
         this.color = config.color;
       }
-      if (config == null ? void 0 : config.bold) {
+      if ((config == null ? void 0 : config.bold) !== void 0) {
         this.bold = config.bold;
       }
-      if (config == null ? void 0 : config.italic) {
+      if ((config == null ? void 0 : config.italic) !== void 0) {
         this.italic = config.italic;
       }
     }
@@ -238,7 +238,7 @@
   var Button = class extends TextElement {
     constructor(config) {
       super("BUTTON", config);
-      this.clickCallback = config.do;
+      this.do = config.do;
       this.el.addEventListener("click", () => {
         this.clickCallback && this.clickCallback();
       });
@@ -256,8 +256,7 @@
       this.clickCallback = callback;
     }
     get do() {
-      return this.clickCallback || (() => {
-      });
+      return this.clickCallback;
     }
   };
 
@@ -348,7 +347,7 @@
       super("SPAN");
       this.el.style.display = "none";
       this.el.className = "keyboard__" + keyboardCount;
-      this.upCallback = config.up;
+      this.up = config.up;
       document.addEventListener("keyup", (e) => {
         if (this.upCallback !== void 0) {
           this.upCallback(e.key);
@@ -359,8 +358,7 @@
       this.upCallback = callback;
     }
     get up() {
-      return this.upCallback || (() => {
-      });
+      return this.upCallback;
     }
   };
 
@@ -407,8 +405,7 @@
       this.el.className = "timer__" + timerCount;
       this.frequency = config.freq || 1e3;
       this.ellapsed = 0;
-      this.callback = config.do || (() => {
-      });
+      this.do = config.do;
     }
     set freq(value) {
       this.frequency = value;
@@ -420,8 +417,9 @@
     }
     set do(callback) {
       this.callback = callback;
-      this.stop();
-      this.start();
+      if (this.timer) {
+        this.start();
+      }
     }
     get do() {
       return this.callback;
@@ -434,12 +432,12 @@
         this.ellapsed += this.frequency;
         if (this.callback !== void 0) {
           const minutes = Math.floor(this.ellapsed / 6e4);
-          const [seconds, milliseconds] = String(
+          const [seconds, milliseconds = 0] = String(
             this.ellapsed % 6e4 / 1e3
           ).split(".");
           this.callback(
             this.ellapsed,
-            Number(milliseconds),
+            Number(milliseconds) * 100,
             Number(seconds),
             minutes
           );

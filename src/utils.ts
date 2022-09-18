@@ -1,17 +1,12 @@
 import { BaseElement } from "./elements/BaseElement";
-import {
-  Args,
-  CanvasInstruction,
-  CanvasLineInstruction,
-  Config,
-} from "./types";
+import { Args, CanvasInstruction, CanvasLineInstruction } from "./types";
 
-export function handleContainerArgs([first, ...rest]: Args): [
-  Config | undefined,
+export function handleContainerArgs<T>([first, ...rest]: Args<T>): [
+  T | undefined,
   Array<BaseElement | CanvasInstruction>
 ] {
   if (!(first instanceof BaseElement)) {
-    return [first as Config, rest];
+    return [first, rest];
   } else {
     return [undefined, [first as BaseElement | CanvasInstruction, ...rest]];
   }

@@ -1,8 +1,7 @@
-import { Config } from "../types";
-import { TextElement } from "./TextElement";
+import { TextElement, TextElementConfig } from "./TextElement";
 
 export class LineOfText extends TextElement {
-  constructor(config?: Config) {
+  constructor(config?: TextElementConfig) {
     super("SPAN", config);
   }
 }

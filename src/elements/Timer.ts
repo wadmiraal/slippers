@@ -1,49 +1,49 @@
-import { Config } from "../types";
 import { BaseElement } from "./BaseElement";
 
+export interface TimerConfig {
+  freq?: number;
+  do?: (totalMs: number, ms: number, s: number, m: number) => void;
+}
+
 let timerCount = 0;
+const DEFAULT_FREQ = 1000;
 export class Timer extends BaseElement {
-  protected frequency: number;
-  protected callback: (
-    totalMs: number,
-    ms: number,
-    s: number,
-    m: number
-  ) => void;
+  protected frequency = DEFAULT_FREQ;
+  protected callback: TimerConfig["do"];
   protected ellapsed: number;
   protected timer?: number;
 
-  constructor(config: Config) {
+  constructor(config?: TimerConfig) {
     super("SPAN");
     timerCount++;
 
     this.el.style.display = "none";
     this.el.className = "timer__" + timerCount;
 
-    this.frequency = config.freq || 1000;
+    this.freq = config?.freq || DEFAULT_FREQ;
     this.ellapsed = 0;
-    this.callback = config.do || (() => {});
+    this.do = config?.do;
   }
 
   set freq(value: number) {
     this.frequency = value;
-    this.stop();
-    this.start();
+    if (this.timer) {
+      this.start();
+    }
   }
 
-  get freq() {
+  get freq(): number {
     return this.frequency;
   }
 
-  set do(
-    callback: (totalMs: number, ms: number, s: number, m: number) => void
-  ) {
+  set do(callback: TimerConfig["do"]) {
     this.callback = callback;
-    this.stop();
-    this.start();
+    if (this.timer) {
+      this.start();
+    }
   }
 
-  get do() {
+  get do(): TimerConfig["do"] {
     return this.callback;
   }
 
@@ -56,12 +56,12 @@ export class Timer extends BaseElement {
       this.ellapsed += this.frequency;
       if (this.callback !== undefined) {
         const minutes = Math.floor(this.ellapsed / 60000);
-        const [seconds, milliseconds] = String(
+        const [seconds, milliseconds = 0] = String(
           (this.ellapsed % 60000) / 1000
         ).split(".");
         this.callback(
           this.ellapsed,
-          Number(milliseconds),
+          Number(milliseconds) * 100,
           Number(seconds),
           minutes
         );

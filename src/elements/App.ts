@@ -10,6 +10,7 @@ export class App extends ContainerElement {
     this.el.style.overflow = "hidden";
     this.el.style.margin = "20px auto";
     this.el.style.padding = "5px";
+    this.el.style.position = "relative";
 
     if (config?.backgroundColor === undefined) {
       this.backgroundColor = "white";

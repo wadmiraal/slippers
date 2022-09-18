@@ -4,12 +4,17 @@ import {
   isCanvasInstruction,
   isCanvasLineInstruction,
 } from "../utils";
-import { ContainerElement } from "./ContainerElement";
+import { ContainerElement, ContainerElementConfig } from "./ContainerElement";
+
+export interface CanvasConfig extends ContainerElementConfig {
+  color?: string;
+  lineWidth?: number;
+}
 
 export class Canvas extends ContainerElement {
   protected ctx: CanvasRenderingContext2D | null;
 
-  constructor(...args: Args) {
+  constructor(...args: Args<CanvasConfig>) {
     const [config, children] = handleContainerArgs(args);
     super("CANVAS", config);
 

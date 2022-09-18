@@ -1,9 +1,20 @@
-import { Config } from "../types";
 import { extractNumber } from "../utils";
 import { BaseElement } from "./BaseElement";
 
+export interface VisualElementConfig {
+  backgroundColor?: string;
+  borderColor?: string;
+  borderRadius?: number;
+  borderWidth?: number;
+  borderStyle?: string;
+  left?: number;
+  top?: number;
+  width?: number;
+  height?: number;
+}
+
 export class VisualElement extends BaseElement {
-  constructor(tagName: string, config?: Config) {
+  constructor(tagName: string, config?: VisualElementConfig) {
     super(tagName);
 
     if (config?.backgroundColor !== undefined) {

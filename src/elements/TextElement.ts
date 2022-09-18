@@ -1,9 +1,17 @@
-import { Config } from "../types";
 import { extractNumber } from "../utils";
-import { VisualElement } from "./VisualElement";
+import { VisualElement, VisualElementConfig } from "./VisualElement";
+
+export interface TextElementConfig extends VisualElementConfig {
+  text?: string;
+  size?: number;
+  font?: string;
+  color?: string;
+  bold?: boolean;
+  italic?: boolean;
+}
 
 export class TextElement extends VisualElement {
-  constructor(tagName: string, config?: Config) {
+  constructor(tagName: string, config?: TextElementConfig) {
     super(tagName, config);
 
     if (config?.text) {
@@ -18,10 +26,10 @@ export class TextElement extends VisualElement {
     if (config?.color) {
       this.color = config.color;
     }
-    if (config?.bold) {
+    if (config?.bold !== undefined) {
       this.bold = config.bold;
     }
-    if (config?.italic) {
+    if (config?.italic !== undefined) {
       this.italic = config.italic;
     }
   }
