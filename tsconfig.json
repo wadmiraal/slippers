@@ -1,20 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "AMD",
-    "lib": ["es5", "es6", "dom"],
-    "outFile": "./dist/slippers.js",
-    "strict": true,
-    "rootDir": "./src/",
-    "typeRoots": ["./src/types.d.ts", "node_modues/@types"],
-    "baseUrl": ".",
-    "paths": {
-      "lodash": ["node_modules/lodash"]
-    },
+    "moduleResolution": "node",
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "stripInternal": true,
-    "forceConsistentCasingInFileNames": true
+    "module": "amd",
+    "target": "es6",
+    "lib": ["es6", "dom"],
+    "outFile": "./dist/slippers.js",
+    "strict": true
   },
   "files": ["./src/slippers.ts"]
 }

@@ -2,6 +2,8 @@
 var app, canvas, guessed, headDrawn, i, j, leftArmDrawn, leftLegDrawn, len, letter, letters, mistake, rightArmDrawn, rightLegDrawn, torsoDrawn, word,
   indexOf = [].indexOf;
 
+word = "slippers".split("");
+
 app = App({
   width: 800,
   height: 400
@@ -48,8 +50,6 @@ app = App({
 letters = {};
 
 guessed = {};
-
-word = "slippers".split("");
 
 for (i = j = 0, len = word.length; j < len; i = ++j) {
   letter = word[i];
