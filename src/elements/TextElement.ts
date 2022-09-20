@@ -47,7 +47,7 @@ export class TextElement extends VisualElement {
   }
 
   get text() {
-    return this.el.textContent || "";
+    return String(this.el.textContent);
   }
 
   set font(value: string) {

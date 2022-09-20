@@ -81,8 +81,7 @@ export class Timer extends BaseElement {
   }
 
   restart() {
-    this.stop();
-    this.ellapsed = 0;
+    this.reset();
     this.start();
   }
 }

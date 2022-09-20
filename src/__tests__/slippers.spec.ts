@@ -2,12 +2,19 @@ import { screen } from "@testing-library/dom";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import { App } from "../elements/App";
-import { Button } from "../elements/Button";
-import { Keyboard } from "../elements/Keyboard";
+import { Button, ButtonConfig } from "../elements/Button";
+import { Canvas, CanvasConfig } from "../elements/Canvas";
+import {
+  ContainerElement,
+  ContainerElementConfig,
+} from "../elements/ContainerElement";
+import { Keyboard, KeyboardConfig } from "../elements/Keyboard";
 import { LineOfText } from "../elements/LineOfText";
 import { Paragraph } from "../elements/Paragraph";
 import { Section } from "../elements/Section";
-import { Timer } from "../elements/Timer";
+import { TextElement, TextElementConfig } from "../elements/TextElement";
+import { Timer, TimerConfig } from "../elements/Timer";
+import { VisualElement, VisualElementConfig } from "../elements/VisualElement";
 import "../slippers";
 
 afterEach(() => {
@@ -70,6 +77,15 @@ describe("basic components", () => {
 
     expect(screen.getByText("Some text")).toBeInTheDocument();
     app.remove(text);
+    expect(screen.queryByText("Some text")).not.toBeInTheDocument();
+  });
+
+  it("should allow an element to remove itself", () => {
+    let text: LineOfText;
+    const app = new App((text = new LineOfText({ text: "Some text" })));
+
+    expect(screen.getByText("Some text")).toBeInTheDocument();
+    text.delete();
     expect(screen.queryByText("Some text")).not.toBeInTheDocument();
   });
 
@@ -202,14 +218,16 @@ describe("timer", () => {
     jest.runOnlyPendingTimers();
     expect(counter).toBe(300);
 
+    // Changing the callback doesn't interrupt the timer.
     timer.do = (ellapsed) => (counter = ellapsed + 50);
     jest.runOnlyPendingTimers();
     expect(counter).toBe(450);
 
-    timer.reset();
-    timer.start();
+    timer.restart();
+    // Changing the frequency doesn't interrupt the timer.
+    timer.freq = 200;
     jest.runOnlyPendingTimers();
-    expect(counter).toBe(150);
+    expect(counter).toBe(250);
   });
 
   function renderTimerApp() {
@@ -227,4 +245,102 @@ describe("timer", () => {
     );
     timer.start();
   }
+});
+
+describe("configuration, setters, and getters", () => {
+  test("ContainerElement", () => {
+    const config: ContainerElementConfig = {
+      align: "right",
+    };
+    const container = new ContainerElement("DIV", config);
+
+    expect(config.align).toEqual(container.align);
+  });
+
+  test("TextElement", () => {
+    const config: TextElementConfig = {
+      text: "my text",
+      size: 12,
+      font: "Arial",
+      color: "red",
+      bold: true,
+      italic: false,
+    };
+    const text = new TextElement("SPAN", config);
+
+    expect(config.text).toEqual(text.text);
+    expect(config.size).toEqual(text.size);
+    expect(config.font).toEqual(text.font);
+    expect(config.color).toEqual(text.color);
+    expect(config.bold).toEqual(text.bold);
+    expect(config.italic).toEqual(text.italic);
+  });
+
+  test("VisualElement", () => {
+    const config: VisualElementConfig = {
+      backgroundColor: "gray",
+      borderColor: "blue",
+      borderRadius: 5,
+      borderWidth: 2,
+      borderStyle: "dotted",
+      left: 100,
+      top: 150,
+      width: 500,
+      height: 400,
+    };
+    const element = new VisualElement("DIV", config);
+
+    expect(config.backgroundColor).toEqual(element.backgroundColor);
+    expect(config.borderColor).toEqual(element.borderColor);
+    expect(config.borderRadius).toEqual(element.borderRadius);
+    expect(config.borderWidth).toEqual(element.borderWidth);
+    expect(config.borderStyle).toEqual(element.borderStyle);
+    expect(config.left).toEqual(element.left);
+    expect(config.top).toEqual(element.top);
+    expect(config.width).toEqual(element.width);
+    expect(config.height).toEqual(element.height);
+  });
+
+  test("Canvas", () => {
+    const config: CanvasConfig = {
+      color: "green",
+      lineWidth: 5,
+    };
+
+    // Canvas only works if effectively added to a document.
+    let canvas;
+    new App((canvas = new Canvas(config)));
+
+    expect(config.color).toEqual(canvas.color);
+    expect(config.lineWidth).toEqual(canvas.lineWidth);
+  });
+
+  test("Button", () => {
+    const config: ButtonConfig = {
+      do: () => {},
+    };
+    const button = new Button(config);
+
+    expect(config.do).toEqual(button.do);
+  });
+
+  test("Keyboard", () => {
+    const config: KeyboardConfig = {
+      up: () => {},
+    };
+    const keyboard = new Keyboard(config);
+
+    expect(config.up).toEqual(keyboard.up);
+  });
+
+  test("Timer", () => {
+    const config: TimerConfig = {
+      freq: 2000,
+      do: () => {},
+    };
+    const timer = new Timer(config);
+
+    expect(config.freq).toEqual(timer.freq);
+    expect(config.do).toEqual(timer.do);
+  });
 });
