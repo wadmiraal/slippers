@@ -12,18 +12,19 @@ export interface CanvasConfig extends ContainerElementConfig {
 }
 
 export class Canvas extends ContainerElement {
-  protected ctx: CanvasRenderingContext2D | null;
+  protected ctx: CanvasRenderingContext2D;
 
   constructor(...args: Args<CanvasConfig>) {
     const [config, children] = handleContainerArgs(args);
     super("CANVAS", config);
 
-    this.ctx = (this.el as HTMLCanvasElement).getContext("2d");
+    const ctx = (this.el as HTMLCanvasElement).getContext("2d");
 
-    if (this.ctx === null) {
-      // TODO
-      return;
+    if (ctx === null) {
+      throw new Error("Could not define Canvas context");
     }
+
+    this.ctx = ctx;
 
     this.color = config?.color || "black";
     this.lineWidth = config?.lineWidth || 1;
@@ -38,11 +39,11 @@ export class Canvas extends ContainerElement {
   add(...children: Array<CanvasInstruction>) {
     children.forEach((child) => {
       if (isCanvasLineInstruction(child)) {
-        const fn = child[0];
-        fn(child[1], child[2], this.ctx!);
+        const [fn, x, y] = child;
+        fn(x, y, this.ctx);
       } else {
-        const fn = child[0];
-        fn(child[1], child[2], child[3], this.ctx!);
+        const [fn, x, y, r] = child;
+        fn(x, y, r, this.ctx);
       }
     });
   }
@@ -58,23 +59,19 @@ export class Canvas extends ContainerElement {
   }
 
   set color(value: string) {
-    if (this.ctx) {
-      this.ctx.strokeStyle = value;
-    }
+    this.ctx.strokeStyle = value;
   }
 
   get color() {
-    return this.ctx ? this.ctx.strokeStyle.toString() : "black";
+    return this.ctx.strokeStyle.toString();
   }
 
   set lineWidth(value: number) {
-    if (this.ctx) {
-      this.ctx.lineWidth = value;
-    }
+    this.ctx.lineWidth = value;
   }
 
   get lineWidth() {
-    return this.ctx ? this.ctx.lineWidth : 1;
+    return this.ctx.lineWidth;
   }
 }
 
@@ -82,25 +79,23 @@ export function moveTo(
   x: number,
   y: number,
   ctx?: CanvasRenderingContext2D
-): CanvasInstruction | undefined {
+): CanvasInstruction {
   if (ctx) {
     ctx.moveTo(x, y);
-  } else {
-    return [moveTo, x, y];
   }
+  return [moveTo, x, y];
 }
 
 export function drawLine(
   x: number,
   y: number,
   ctx?: CanvasRenderingContext2D
-): CanvasInstruction | undefined {
+): CanvasInstruction {
   if (ctx) {
     ctx.lineTo(x, y);
     ctx.stroke();
-  } else {
-    return [drawLine, x, y];
   }
+  return [drawLine, x, y];
 }
 
 export function drawCircle(
@@ -108,13 +103,12 @@ export function drawCircle(
   y: number,
   r: number,
   ctx?: CanvasRenderingContext2D
-): CanvasInstruction | undefined {
+): CanvasInstruction {
   if (ctx) {
     ctx.beginPath();
     ctx.moveTo(x + r, y);
     ctx.arc(x, y, r, 0, 2 * Math.PI);
     ctx.stroke();
-  } else {
-    return [drawCircle, x, y, r];
   }
+  return [drawCircle, x, y, r];
 }

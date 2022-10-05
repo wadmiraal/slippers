@@ -1,9 +1,8 @@
 import { BaseElement } from "./elements/BaseElement";
-import { ContainerElementConfig } from "./elements/ContainerElement";
 
-export type Args<T = ContainerElementConfig> = [
-  T | BaseElement,
-  ...Array<BaseElement>
+export type Args<T> = [
+  T | BaseElement | CanvasInstruction,
+  ...Array<BaseElement | CanvasInstruction>
 ];
 
 export type CanvasLineInstruction = [

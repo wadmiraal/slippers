@@ -3,7 +3,6 @@ import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import { App } from "../elements/App";
 import { Button, ButtonConfig } from "../elements/Button";
-import { Canvas, CanvasConfig } from "../elements/Canvas";
 import {
   ContainerElement,
   ContainerElementConfig,
@@ -299,20 +298,6 @@ describe("configuration, setters, and getters", () => {
     expect(config.top).toEqual(element.top);
     expect(config.width).toEqual(element.width);
     expect(config.height).toEqual(element.height);
-  });
-
-  test("Canvas", () => {
-    const config: CanvasConfig = {
-      color: "green",
-      lineWidth: 5,
-    };
-
-    // Canvas only works if effectively added to a document.
-    let canvas;
-    new App((canvas = new Canvas(config)));
-
-    expect(config.color).toEqual(canvas.color);
-    expect(config.lineWidth).toEqual(canvas.lineWidth);
   });
 
   test("Button", () => {

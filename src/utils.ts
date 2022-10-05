@@ -5,10 +5,10 @@ export function handleContainerArgs<T>([first, ...rest]: Args<T>): [
   T | undefined,
   Array<BaseElement | CanvasInstruction>
 ] {
-  if (!(first instanceof BaseElement)) {
+  if (!isBaseElement(first) && !isCanvasInstruction(first)) {
     return [first, rest];
   } else {
-    return [undefined, [first as BaseElement | CanvasInstruction, ...rest]];
+    return [undefined, [first, ...rest]];
   }
 }
 
@@ -16,16 +16,16 @@ export function extractNumber(value: string) {
   return Number(value.replace(/^(\d+).*/, "$1"));
 }
 
-export function isBaseElement(
-  o: BaseElement | CanvasInstruction
+export function isBaseElement<T>(
+  o: BaseElement | CanvasInstruction | T
 ): o is BaseElement {
-  return (o as any).delete !== undefined;
+  return o instanceof BaseElement;
 }
 
-export function isCanvasInstruction(
-  o: BaseElement | CanvasInstruction
+export function isCanvasInstruction<T>(
+  o: BaseElement | CanvasInstruction | T
 ): o is CanvasInstruction {
-  return (o as any).length === 3 && typeof (o as any)[1] === "number";
+  return Array.isArray(o) && typeof o[1] === "number";
 }
 
 export function isCanvasLineInstruction(
