@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "build:lib": "esbuild src/slippers.ts --bundle --outfile=dist/slippers.js",
+    "build:lib": "esbuild src/lib/slippers.ts --bundle --outfile=dist/slippers.js",
     "build:examples": "coffee --compile --bare --output gh-pages/examples/ examples/*.coffee",
     "build": "npm run build:lib && npm run build:examples && cp dist/slippers.js gh-pages/",
     "test": "jest"

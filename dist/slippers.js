@@ -1,6 +1,6 @@
 "use strict";
 (() => {
-  // src/elements/BaseElement.ts
+  // src/lib/elements/BaseElement.ts
   var BaseElement = class {
     constructor(tagName) {
       this.el = document.createElement(tagName);
@@ -14,9 +14,9 @@
     }
   };
 
-  // src/utils.ts
+  // src/lib/utils.ts
   function handleContainerArgs([first, ...rest]) {
-    if (!(first instanceof BaseElement)) {
+    if (!isBaseElement(first) && !isCanvasInstruction(first)) {
       return [first, rest];
     } else {
       return [void 0, [first, ...rest]];
@@ -26,16 +26,16 @@
     return Number(value.replace(/^(\d+).*/, "$1"));
   }
   function isBaseElement(o) {
-    return o.delete !== void 0;
+    return o instanceof BaseElement;
   }
   function isCanvasInstruction(o) {
-    return o.length === 3 && typeof o[1] === "number";
+    return Array.isArray(o) && typeof o[1] === "number";
   }
   function isCanvasLineInstruction(o) {
     return o.length === 3;
   }
 
-  // src/elements/VisualElement.ts
+  // src/lib/elements/VisualElement.ts
   var VisualElement = class extends BaseElement {
     constructor(tagName, config) {
       super(tagName);
@@ -130,7 +130,7 @@
     }
   };
 
-  // src/elements/ContainerElement.ts
+  // src/lib/elements/ContainerElement.ts
   var ContainerElement = class extends VisualElement {
     constructor(tagName, config) {
       super(tagName, config);
@@ -152,7 +152,7 @@
     }
   };
 
-  // src/elements/App.ts
+  // src/lib/elements/App.ts
   var App = class extends ContainerElement {
     constructor(...args) {
       const [config, children] = handleContainerArgs(args);
@@ -173,7 +173,7 @@
     }
   };
 
-  // src/elements/TextElement.ts
+  // src/lib/elements/TextElement.ts
   var TextElement = class extends VisualElement {
     constructor(tagName, config) {
       super(tagName, config);
@@ -206,7 +206,7 @@
       this.el.textContent = value;
     }
     get text() {
-      return this.el.textContent || "";
+      return String(this.el.textContent);
     }
     set font(value) {
       this.el.style.fontFamily = value;
@@ -234,7 +234,7 @@
     }
   };
 
-  // src/elements/Button.ts
+  // src/lib/elements/Button.ts
   var Button = class extends TextElement {
     constructor(config) {
       super("BUTTON", config);
@@ -260,15 +260,16 @@
     }
   };
 
-  // src/elements/Canvas.ts
+  // src/lib/elements/Canvas.ts
   var Canvas = class extends ContainerElement {
     constructor(...args) {
       const [config, children] = handleContainerArgs(args);
       super("CANVAS", config);
-      this.ctx = this.el.getContext("2d");
-      if (this.ctx === null) {
-        return;
+      const ctx = this.el.getContext("2d");
+      if (ctx === null) {
+        throw new Error("Could not define Canvas context");
       }
+      this.ctx = ctx;
       this.color = (config == null ? void 0 : config.color) || "black";
       this.lineWidth = (config == null ? void 0 : config.lineWidth) || 1;
       children.forEach((child) => {
@@ -280,11 +281,11 @@
     add(...children) {
       children.forEach((child) => {
         if (isCanvasLineInstruction(child)) {
-          const fn = child[0];
-          fn(child[1], child[2], this.ctx);
+          const [fn, x, y] = child;
+          fn(x, y, this.ctx);
         } else {
-          const fn = child[0];
-          fn(child[1], child[2], child[3], this.ctx);
+          const [fn, x, y, r] = child;
+          fn(x, y, r, this.ctx);
         }
       });
     }
@@ -297,36 +298,30 @@
       this.el.setAttribute("height", value.toString());
     }
     set color(value) {
-      if (this.ctx) {
-        this.ctx.strokeStyle = value;
-      }
+      this.ctx.strokeStyle = value;
     }
     get color() {
-      return this.ctx ? this.ctx.strokeStyle.toString() : "black";
+      return this.ctx.strokeStyle.toString();
     }
     set lineWidth(value) {
-      if (this.ctx) {
-        this.ctx.lineWidth = value;
-      }
+      this.ctx.lineWidth = value;
     }
     get lineWidth() {
-      return this.ctx ? this.ctx.lineWidth : 1;
+      return this.ctx.lineWidth;
     }
   };
   function moveTo(x, y, ctx) {
     if (ctx) {
       ctx.moveTo(x, y);
-    } else {
-      return [moveTo, x, y];
     }
+    return [moveTo, x, y];
   }
   function drawLine(x, y, ctx) {
     if (ctx) {
       ctx.lineTo(x, y);
       ctx.stroke();
-    } else {
-      return [drawLine, x, y];
     }
+    return [drawLine, x, y];
   }
   function drawCircle(x, y, r, ctx) {
     if (ctx) {
@@ -334,12 +329,11 @@
       ctx.moveTo(x + r, y);
       ctx.arc(x, y, r, 0, 2 * Math.PI);
       ctx.stroke();
-    } else {
-      return [drawCircle, x, y, r];
     }
+    return [drawCircle, x, y, r];
   }
 
-  // src/elements/Keyboard.ts
+  // src/lib/elements/Keyboard.ts
   var keyboardCount = 0;
   var Keyboard = class extends BaseElement {
     constructor(config) {
@@ -362,14 +356,14 @@
     }
   };
 
-  // src/elements/LineOfText.ts
+  // src/lib/elements/LineOfText.ts
   var LineOfText = class extends TextElement {
     constructor(config) {
       super("SPAN", config);
     }
   };
 
-  // src/elements/Paragraph.ts
+  // src/lib/elements/Paragraph.ts
   var Paragraph = class extends ContainerElement {
     constructor(...args) {
       const [config, children] = handleContainerArgs(args);
@@ -382,7 +376,7 @@
     }
   };
 
-  // src/elements/Section.ts
+  // src/lib/elements/Section.ts
   var Section = class extends ContainerElement {
     constructor(...args) {
       const [config, children] = handleContainerArgs(args);
@@ -395,22 +389,25 @@
     }
   };
 
-  // src/elements/Timer.ts
+  // src/lib/elements/Timer.ts
   var timerCount = 0;
+  var DEFAULT_FREQ = 1e3;
   var Timer = class extends BaseElement {
     constructor(config) {
       super("SPAN");
+      this.frequency = DEFAULT_FREQ;
       timerCount++;
       this.el.style.display = "none";
       this.el.className = "timer__" + timerCount;
-      this.frequency = config.freq || 1e3;
+      this.freq = (config == null ? void 0 : config.freq) || DEFAULT_FREQ;
       this.ellapsed = 0;
-      this.do = config.do;
+      this.do = config == null ? void 0 : config.do;
     }
     set freq(value) {
       this.frequency = value;
-      this.stop();
-      this.start();
+      if (this.timer) {
+        this.start();
+      }
     }
     get freq() {
       return this.frequency;
@@ -454,13 +451,12 @@
       this.ellapsed = 0;
     }
     restart() {
-      this.stop();
-      this.ellapsed = 0;
+      this.reset();
       this.start();
     }
   };
 
-  // src/slippers.ts
+  // src/lib/slippers.ts
   window.App = (...args) => new App(...args);
   window.Button = (config) => new Button(config);
   window.Canvas = (...args) => new Canvas(...args);
