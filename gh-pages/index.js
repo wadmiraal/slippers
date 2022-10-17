@@ -150,7 +150,7 @@
         }
       }
       (function(root) {
-        var CoffeeScript = function() {
+        var CoffeeScript2 = function() {
           var _Mathabs = Math.abs, _StringfromCharCode = String.fromCharCode, _Mathfloor = Math.floor;
           function require2(path) {
             return require2[path];
@@ -5534,19 +5534,19 @@
           }(), require2["./browser"] = function() {
             var module2 = { exports: {} };
             return function() {
-              var indexOf = [].indexOf, CoffeeScript2, compile;
-              CoffeeScript2 = require2("./coffeescript");
-              var _CoffeeScript = CoffeeScript2;
-              compile = _CoffeeScript.compile, CoffeeScript2.eval = function(code) {
+              var indexOf = [].indexOf, CoffeeScript3, compile;
+              CoffeeScript3 = require2("./coffeescript");
+              var _CoffeeScript = CoffeeScript3;
+              compile = _CoffeeScript.compile, CoffeeScript3.eval = function(code) {
                 var options = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {}, globalRoot;
                 return null == options.bare && (options.bare = true), globalRoot = "undefined" != typeof window && null !== window ? window : global, globalRoot.eval(compile(code, options));
-              }, CoffeeScript2.run = function(code) {
+              }, CoffeeScript3.run = function(code) {
                 var options = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {};
                 return options.bare = true, options.shiftLine = true, Function(compile(code, options))();
-              }, module2.exports = CoffeeScript2, "undefined" == typeof window || null === window || ("undefined" != typeof btoa && null !== btoa && "undefined" != typeof JSON && null !== JSON && (compile = function(code) {
+              }, module2.exports = CoffeeScript3, "undefined" == typeof window || null === window || ("undefined" != typeof btoa && null !== btoa && "undefined" != typeof JSON && null !== JSON && (compile = function(code) {
                 var options = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {};
-                return options.inlineMap = true, CoffeeScript2.compile(code, options);
-              }), CoffeeScript2.load = function(url, callback) {
+                return options.inlineMap = true, CoffeeScript3.compile(code, options);
+              }), CoffeeScript3.load = function(url, callback) {
                 var options = 2 < arguments.length && void 0 !== arguments[2] ? arguments[2] : {}, hold = !!(3 < arguments.length && void 0 !== arguments[3]) && arguments[3], xhr;
                 return options.sourceFiles = [url], xhr = window.ActiveXObject ? new window.ActiveXObject("Microsoft.XMLHTTP") : new window.XMLHttpRequest(), xhr.open("GET", url, true), "overrideMimeType" in xhr && xhr.overrideMimeType("text/plain"), xhr.onreadystatechange = function() {
                   var param, ref;
@@ -5555,13 +5555,13 @@
                       throw new Error("Could not load ".concat(url));
                     else if (param = [xhr.responseText, options], !hold) {
                       var _CoffeeScript2;
-                      (_CoffeeScript2 = CoffeeScript2).run.apply(_CoffeeScript2, _toConsumableArray(param));
+                      (_CoffeeScript2 = CoffeeScript3).run.apply(_CoffeeScript2, _toConsumableArray(param));
                     }
                     if (callback)
                       return callback(param);
                   }
                 }, xhr.send(null);
-              }, CoffeeScript2.runScripts = function() {
+              }, CoffeeScript3.runScripts = function() {
                 var coffees, coffeetypes, _execute, i, index, j, len, s, script, scripts;
                 for (scripts = window.document.getElementsByTagName("script"), coffeetypes = ["text/coffeescript", "text/literate-coffeescript"], coffees = function() {
                   var j2, len2, ref, results;
@@ -5572,88 +5572,115 @@
                   var param;
                   if (param = coffees[index], param instanceof Array) {
                     var _CoffeeScript3;
-                    return (_CoffeeScript3 = CoffeeScript2).run.apply(_CoffeeScript3, _toConsumableArray(param)), index++, _execute();
+                    return (_CoffeeScript3 = CoffeeScript3).run.apply(_CoffeeScript3, _toConsumableArray(param)), index++, _execute();
                   }
                 }, i = j = 0, len = coffees.length; j < len; i = ++j)
                   script = coffees[i], function(script2, i2) {
                     var options, source;
-                    return options = { literate: script2.type === coffeetypes[1] }, source = script2.src || script2.getAttribute("data-src"), source ? (options.filename = source, CoffeeScript2.load(source, function(param) {
+                    return options = { literate: script2.type === coffeetypes[1] }, source = script2.src || script2.getAttribute("data-src"), source ? (options.filename = source, CoffeeScript3.load(source, function(param) {
                       return coffees[i2] = param, _execute();
                     }, options, true)) : (options.filename = script2.id && "" !== script2.id ? script2.id : "coffeescript".concat(0 === i2 ? "" : i2), options.sourceFiles = ["embedded"], coffees[i2] = [script2.innerHTML, options]);
                   }(script, i);
                 return _execute();
-              }, this === window && (window.addEventListener ? window.addEventListener("DOMContentLoaded", CoffeeScript2.runScripts, false) : window.attachEvent("onload", CoffeeScript2.runScripts)));
+              }, this === window && (window.addEventListener ? window.addEventListener("DOMContentLoaded", CoffeeScript3.runScripts, false) : window.attachEvent("onload", CoffeeScript3.runScripts)));
             }.call(this), module2.exports;
           }(), require2["./browser"];
         }();
         "function" == typeof define && define.amd ? define(function() {
-          return CoffeeScript;
-        }) : root.CoffeeScript = CoffeeScript;
+          return CoffeeScript2;
+        }) : root.CoffeeScript = CoffeeScript2;
       })(exports);
     }
   });
 
   // src/playground/index.ts
-  var require_playground = __commonJS({
-    "src/playground/index.ts"(exports) {
-      var import_coffeescript = __toESM(require_coffeescript());
-      function compileCoffeeCode(code) {
-        return import_coffeescript.CoffeeScript.compile(code);
-      }
-      function executeCode(code) {
-        new Function(code)();
-      }
-      function clearResult() {
-        const resultWrapper = getResultWrapper();
-        if (resultWrapper) {
-          resultWrapper.innerText = "";
-        }
-      }
-      function logError(e) {
-        const resultWrapper = getResultWrapper();
-        if (resultWrapper) {
-          const log = document.createElement("PRE");
-          log.id = "errors";
-          log.innerText = `There was an error:
+  var import_coffeescript = __toESM(require_coffeescript());
+  function compileCoffeeCode(code) {
+    return import_coffeescript.CoffeeScript.compile(code);
+  }
+  function executeCode(code) {
+    new Function(code)();
+  }
+  function clearResult() {
+    const resultWrapper = getResultWrapper();
+    if (resultWrapper) {
+      resultWrapper.textContent = "";
+    }
+  }
+  function logError(e) {
+    clearResult();
+    const resultWrapper = getResultWrapper();
+    if (resultWrapper) {
+      const log = document.createElement("PRE");
+      log.id = "errors";
+      log.textContent = `There was an error:
 ${e}`;
-          resultWrapper.append(log);
-        }
+      resultWrapper.append(log);
+    }
+  }
+  function getResultWrapper() {
+    return document.getElementById("result");
+  }
+  function handlePlay() {
+    clearResult();
+    try {
+      executeCode(compileCoffeeCode(editor.getValue()));
+    } catch (e) {
+      if (e instanceof Error) {
+        logError(e);
       }
-      function getResultWrapper() {
-        return document.getElementById("result");
-      }
+    }
+  }
+  function handleReset() {
+    clearResult();
+  }
+  function handleChangeExample(e) {
+    return __async(this, null, function* () {
       var _a;
-      (_a = document.getElementById("play")) == null ? void 0 : _a.addEventListener("click", () => {
-        clearResult();
+      const file = (_a = e.currentTarget) == null ? void 0 : _a.value;
+      if (editor.getValue().trim() === "" || confirm(
+        "You will lose your current work. Are you sure you want to load an example file and replace the contents of the editor?"
+      )) {
         try {
-          executeCode(compileCoffeeCode(editor.getValue()));
-        } catch (e) {
-          logError(e);
-        }
-      });
-      var _a2;
-      (_a2 = document.getElementById("reset")) == null ? void 0 : _a2.addEventListener("click", () => {
-        clearResult();
-      });
-      var _a3;
-      (_a3 = document.getElementById("select-example")) == null ? void 0 : _a3.addEventListener("change", (e) => __async(exports, null, function* () {
-        var _a4;
-        const file = (_a4 = e.currentTarget) == null ? void 0 : _a4.value;
-        if (editor.getValue().trim() !== "") {
-          if (confirm(
-            "You will lose your current work. Are you sure you want to load an example file and replace the contents of the editor?"
-          )) {
-            const data = yield fetch(`/examples/${file}.coffee`).then(
-              (r) => r.text()
-            );
-            editor.setValue(data);
+          const data = yield fetch(
+            `${window.location.pathname.replace(
+              /\w+\.html/,
+              ""
+            )}examples/${file}.coffee`
+          ).then(
+            (r) => __async(this, null, function* () {
+              if (r.status > 400) {
+                throw new Error(yield r.text());
+              }
+              return r.text();
+            }),
+            (r) => {
+              throw new Error(r);
+            }
+          );
+          editor.setValue(data);
+        } catch (e2) {
+          if (e2 instanceof Error) {
+            logError(e2);
           }
         }
-      }));
-      var editor = window.ace.edit("editor");
-      editor.setTheme("ace/theme/github");
-      editor.session.setMode("ace/mode/coffee");
-    }
-  });
-  require_playground();
+      }
+    });
+  }
+  function __attach() {
+    var _a, _b, _c;
+    (_a = document.getElementById("play")) == null ? void 0 : _a.addEventListener("click", handlePlay);
+    (_b = document.getElementById("reset")) == null ? void 0 : _b.addEventListener("click", handleReset);
+    (_c = document.getElementById("select-example")) == null ? void 0 : _c.addEventListener("change", handleChangeExample);
+  }
+  function __detach() {
+    var _a, _b, _c;
+    (_a = document.getElementById("play")) == null ? void 0 : _a.removeEventListener("click", handlePlay);
+    (_b = document.getElementById("reset")) == null ? void 0 : _b.removeEventListener("click", handleReset);
+    (_c = document.getElementById("select-example")) == null ? void 0 : _c.removeEventListener("change", handleChangeExample);
+  }
+  __attach();
+  var editor = window.ace.edit("editor");
+  editor.setTheme("ace/theme/github");
+  editor.session.setMode("ace/mode/coffee");
 })();
