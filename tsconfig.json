@@ -5,8 +5,9 @@
     "module": "amd",
     "target": "es6",
     "lib": ["es6", "dom"],
-    "outFile": "./dist/slippers.js",
-    "strict": true
-  },
-  "files": ["./src/slippers.ts"]
+    "strict": true,
+    "paths": {
+      "coffeescript": ["./src/playground/@types/coffeescript.d.ts"]
+    }
+  }
 }

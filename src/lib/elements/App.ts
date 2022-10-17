@@ -22,6 +22,12 @@ export class App extends ContainerElement {
       }
     });
 
-    document.body.append(this.el);
+    if ((window as any).SLIPPERS_CONTAINER_ID !== undefined) {
+      document
+        .getElementById((window as any).SLIPPERS_CONTAINER_ID)
+        ?.append(this.el);
+    } else {
+      document.body.append(this.el);
+    }
   }
 }
