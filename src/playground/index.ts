@@ -55,7 +55,12 @@ async function handleChangeExample(e: Event) {
     )
   ) {
     try {
-      const data = await fetch(`examples/${file}.coffee`).then(
+      const data = await fetch(
+        `${window.location.pathname.replace(
+          /\w+\.html/,
+          ""
+        )}examples/${file}.coffee`
+      ).then(
         async (r) => {
           if (r.status > 400) {
             throw new Error(await r.text());

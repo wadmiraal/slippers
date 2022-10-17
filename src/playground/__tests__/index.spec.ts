@@ -131,7 +131,7 @@ describe("playground", () => {
       "stopwatch.coffee"
     );
     expect(
-      await screen.findByText("Loaded file: examples/stopwatch.coffee")
+      await screen.findByText("Loaded file: /examples/stopwatch.coffee")
     ).toBeInTheDocument();
 
     // Say "no" when asking to confirm.
@@ -141,7 +141,7 @@ describe("playground", () => {
       "hangman.coffee"
     );
     expect(
-      screen.queryByText("Loaded file: examples/hangman.coffee")
+      screen.queryByText("Loaded file: /examples/hangman.coffee")
     ).not.toBeInTheDocument();
 
     // Say "yes" when asking to confirm.
@@ -151,7 +151,7 @@ describe("playground", () => {
       "hangman.coffee"
     );
     expect(
-      await screen.findByText("Loaded file: examples/hangman.coffee")
+      await screen.findByText("Loaded file: /examples/hangman.coffee")
     ).toBeInTheDocument();
   });
 
