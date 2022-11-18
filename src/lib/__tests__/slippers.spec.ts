@@ -76,7 +76,7 @@ describe("basic components", () => {
 
   it("should allow an element to remove itself", () => {
     let text: TextEl;
-    const app = App((text = Text({ text: "Some text" })));
+    App((text = Text({ text: "Some text" })));
 
     expect(screen.getByText("Some text")).toBeInTheDocument();
     text.delete();

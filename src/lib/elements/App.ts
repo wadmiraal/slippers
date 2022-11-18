@@ -22,6 +22,7 @@ export class App extends ContainerElement {
       }
     });
 
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     if ((window as any).SLIPPERS_CONTAINER_ID !== undefined) {
       document
         .getElementById((window as any).SLIPPERS_CONTAINER_ID)
@@ -29,5 +30,6 @@ export class App extends ContainerElement {
     } else {
       document.body.append(this.el);
     }
+    /* eslint-enable @typescript-eslint/no-explicit-any */
   }
 }
