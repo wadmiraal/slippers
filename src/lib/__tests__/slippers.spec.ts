@@ -6,6 +6,7 @@ import { KeyboardConfig } from "../elements/Keyboard";
 import { LineOfText as LineOfTextEl } from "../elements/LineOfText";
 import { Timer as TimerEl, TimerConfig } from "../elements/Timer";
 import "../slippers";
+import { EnrichedWindow } from "../types";
 
 afterEach(() => {
   document.body.childNodes.forEach((node) => {
@@ -14,7 +15,7 @@ afterEach(() => {
 });
 
 const { App, Button, Keyboard, LineOfText, Paragraph, Section, Timer } =
-  window as any;
+  window as unknown as EnrichedWindow;
 
 describe("basic components", () => {
   it("should handle simple interactions", () => {

@@ -14,27 +14,36 @@ import { Paragraph } from "./elements/Paragraph";
 import { Section } from "./elements/Section";
 import { TextElementConfig } from "./elements/TextElement";
 import { Timer, TimerConfig } from "./elements/Timer";
-import { Args } from "./types";
+import { Args, EnrichedWindow } from "./types";
 
 // Expose components.
-(window as any).App = (...args: Args<ContainerElementConfig>) =>
-  new App(...args);
-(window as any).Button = (config: ButtonConfig) => new Button(config);
-(window as any).Canvas = (...args: Args<CanvasConfig>) => new Canvas(...args);
-(window as any).Keyboard = (config: KeyboardConfig) => new Keyboard(config);
-(window as any).LineOfText = (config: TextElementConfig) =>
-  new LineOfText(config);
-(window as any).Paragraph = (...args: Args<ContainerElementConfig>) =>
-  new Paragraph(...args);
-(window as any).Section = (...args: Args<ContainerElementConfig>) =>
-  new Section(...args);
-(window as any).Timer = (config: TimerConfig) => new Timer(config);
+(window as unknown as EnrichedWindow).App = (
+  ...args: Args<ContainerElementConfig>
+) => new App(...args);
+(window as unknown as EnrichedWindow).Button = (config: ButtonConfig) =>
+  new Button(config);
+(window as unknown as EnrichedWindow).Canvas = (...args: Args<CanvasConfig>) =>
+  new Canvas(...args);
+(window as unknown as EnrichedWindow).Keyboard = (config: KeyboardConfig) =>
+  new Keyboard(config);
+(window as unknown as EnrichedWindow).LineOfText = (
+  config?: TextElementConfig
+) => new LineOfText(config);
+(window as unknown as EnrichedWindow).Paragraph = (
+  ...args: Args<ContainerElementConfig>
+) => new Paragraph(...args);
+(window as unknown as EnrichedWindow).Section = (
+  ...args: Args<ContainerElementConfig>
+) => new Section(...args);
+(window as unknown as EnrichedWindow).Timer = (config: TimerConfig) =>
+  new Timer(config);
 
 // Expose special helper components.
-(window as any).moveTo = moveTo;
-(window as any).drawLine = drawLine;
-(window as any).drawCircle = drawCircle;
+(window as unknown as EnrichedWindow).moveTo = moveTo;
+(window as unknown as EnrichedWindow).drawLine = drawLine;
+(window as unknown as EnrichedWindow).drawCircle = drawCircle;
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Expose constants.
 (window as any).left = "left";
 (window as any).center = "center";
@@ -63,3 +72,4 @@ import { Args } from "./types";
 (window as any).teal = "teal";
 (window as any).white = "white";
 (window as any).yellow = "yellow";
+/* eslint-enable @typescript-eslint/no-explicit-any */
