@@ -31,191 +31,73 @@ App(
     top: 80
     left: 20
     
-    Button(
-      text: "7"
-      size: 40
-      width: 55
-      height: 55
-      do: () ->
-        values.push(7)
-        updateText()
-    )
-    
-    Button(
-      text: "8"
-      size: 40
-      width: 55
-      height: 55
-      left: 65
-      do: () ->
-        values.push(8)
-        updateText()
-    )
-    
-    Button(
-      text: "9"
-      size: 40
-      width: 55
-      height: 55
-      left: 130
-      do: () ->
-        values.push(9)
-        updateText()
-    )
-    
-    Button(
-      text: "C"
-      size: 40
-      width: 55
-      height: 55
-      left: 195
-      do: () ->
-        values = []
-        updateText()
-    )
+    ...["7", "8", "9", "C"].map (value, i) ->
+      Button(
+        text: value
+        size: 40
+        width: 55
+        height: 55
+        left: 68 * i
+        do: () ->
+          if value is "C"
+            values = []
+          else
+            values.push(value)
+          updateText()
+      )
   )
   
   Section(
     top: 145
     left: 20
-    
-    Button(
-      text: "4"
-      size: 40
-      width: 55
-      height: 55
-      do: () ->
-        values.push(4)
-        updateText()
-    )
-    
-    Button(
-      text: "5"
-      size: 40
-      width: 55
-      height: 55
-      left: 65
-      do: () ->
-        values.push(5)
-        updateText()
-    )
-    
-    Button(
-      text: "6"
-      size: 40
-      width: 55
-      height: 55
-      left: 130
-      do: () ->
-        values.push(6)
-        updateText()
-    )
-    
-    Button(
-      text: "+"
-      size: 40
-      width: 55
-      height: 55
-      left: 195
-      do: () ->
-        values.push("+")
-        updateText()
-    )
+
+    ...["4", "5", "6", "+"].map (value, i) ->
+      Button(
+        text: value
+        size: 40
+        width: 55
+        height: 55
+        left: 68 * i
+        do: () ->
+          values.push(value)
+          updateText()
+      )
   )
   
   Section(
     top: 210
     left: 20
     
-    Button(
-      text: "1"
-      size: 40
-      width: 55
-      height: 55
-      do: () ->
-        values.push(1)
-        updateText()
-    )
-    
-    Button(
-      text: "2"
-      size: 40
-      width: 55
-      height: 55
-      left: 65
-      do: () ->
-        values.push(2)
-        updateText()
-    )
-    
-    Button(
-      text: "3"
-      size: 40
-      width: 55
-      height: 55
-      left: 130
-      do: () ->
-        values.push(3)
-        updateText()
-    )
-    
-    Button(
-      text: "-"
-      size: 40
-      width: 55
-      height: 55
-      left: 195
-      do: () ->
-        values.push("-")
-        updateText()
-    )
+    ...["1", "2", "3", "-"].map (value, i) ->
+      Button(
+        text: value
+        size: 40
+        width: 55
+        height: 55
+        left: 68 * i
+        do: () ->
+          values.push(value)
+          updateText()
+      )
   )
   
   Section(
     top: 275
     left: 20
-    
-    Button(
-      text: "0"
-      size: 40
-      width: 55
-      height: 55
-      do: () ->
-        values.push(0)
-        updateText()
-    )
-    
-    Button(
-      text: "."
-      size: 40
-      width: 55
-      height: 55
-      left: 65
-      do: () ->
-        values.push(".")
-        updateText()
-    )
-    
-    Button(
-      text: "="
-      size: 40
-      width: 55
-      height: 55
-      left: 130
-      do: () ->
-        compute()
-        updateText()
-    )
-    
-    Button(
-      text: "/"
-      size: 40
-      width: 55
-      height: 55
-      left: 195
-      do: () ->
-        values.push("/")
-        updateText()
-    )
+
+    ...["0", ".", "=", "/"].map (value, i) ->
+      Button(
+        text: value
+        size: 40
+        width: 55
+        height: 55
+        left: 68 * i
+        do: () ->
+          if value is "="
+            compute()
+          else
+            values.push(value)
+          updateText()
+      )
   )
 )
