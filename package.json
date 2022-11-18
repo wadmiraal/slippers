@@ -8,8 +8,8 @@
   "main": "src/lib/slippers.ts",
   "scripts": {
     "build:lib": "esbuild src/lib/slippers.ts --bundle --outfile=build/libs/slippers/slippers.js",
-    "build:playground": "esbuild src/playground/index.ts --bundle --outfile=build/index.js && cp src/playground/index.html build/",
-    "build": "npm run build:lib && npm run build:playground && cp -r src/playground/static/* build/",
+    "build:playground": "esbuild src/playground/index.ts --bundle --outfile=build/index.js && cp src/playground/index.html build/ && cp -r src/playground/static/* build/",
+    "build": "npm run build:lib && npm run build:playground",
     "dev": "esbuild --bundle src/playground/index.ts --outfile=build/index.js --servedir=build",
     "test": "jest"
   },
