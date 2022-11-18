@@ -1,6 +1,0 @@
-build/
-node_modules/
-coverage/
-gh-pages/index.html
-gh-pages/index.js
-gh-pages/libs/slippers/slippers.js
