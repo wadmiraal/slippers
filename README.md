@@ -22,95 +22,7 @@ JS is the answer! JS can allow any newcomer to build fun, creative little apps, 
 
 ## Simple syntax
 
-Any programming language follows a distinct syntax. And although JS' syntax is not "complicated", it cannot rival with [CoffeeScript](https://coffeescript.org/).
-
-Compare the following:
-
-```coffeescript
-App(
-  width: 200
-  height: 300
-
-  Button(
-    text: "Start"
-    backgroundColor: green
-    bold: yes
-    do: () ->
-      timer.start()
-  )
-
-  Button(
-    text: "Stop"
-    backgroundColor: red
-    bold: yes
-    do: () ->
-      timer.stop()
-  )
-
-  timer = Timer(
-    inc: 1000
-    do: (_, elapsed) ->
-      text.text = elapsed
-  )
-
-  Paragraph(
-    align: center
-
-    text = LineOfText(
-     text: "0:00"
-     size: 20
-     font: "Times"
-    )
-  )
-)
-```
-
-with the equivalent in JS:
-
-```js
-var timer, text;
-
-App(
-  {
-    width: 200,
-    height: 300,
-  },
-  Button({
-    text: "Start",
-    backgroundColor: green,
-    bold: true,
-    do: () => {
-      timer.start();
-    },
-  }),
-  Button({
-    text: "Stop",
-    backgroundColor: red,
-    bold: true,
-    do: () => {
-      timer.stop();
-    },
-  }),
-  (timer = Timer({
-    inc: 1000,
-    do: (_, elapsed) => {
-      text.text = elapsed;
-    },
-  })),
-  Paragraph(
-    {
-      align: center,
-    },
-    (text = LineOfText({
-      text: "0:00",
-      size: 20,
-      font: "Times",
-    }))
-  )
-);
-```
-
-The risk of a syntax error seems much more likely in JS than CoffeeScript, if you have no previous experience in programming. Furthermore, the ability to use aliases like `yes` and `no` for boolean values is much more beginner friendly.
+Any programming language follows a distinct syntax. And although JS' syntax is not "complicated", it cannot rival with [CoffeeScript](https://coffeescript.org/). The risk of a syntax error seems much more likely in JS than CoffeeScript, if you have no previous experience in programming. Furthermore, the ability to use aliases like `yes` and `no` for boolean values is much more beginner friendly.
 
 ## Intuitive layout
 
@@ -127,22 +39,44 @@ For positioning, we should make any object follow the HTML document flow, _unles
 
 ...
 
-## Simplified styling (getters/setters)
-
-...
-
 ## Handy constants
 
 ### Colors
 
 Provide some helpful constants for color codes.
 
+- `aqua`
+- `black`
+- `blue`
+- `cyan`
+- `fuchsia`
+- `gray`
 - `green`
+- `lightGray`
+- `lightGreen`
+- `lime`
+- `maroon`
+- `navy`
+- `olive`
+- `purple`
 - `red`
-  ...
+- `teal`
+- `white`
+- `yellow`
 
 ### Fonts
 
 Provide some helpful constants for font families.
 
-...
+- `serif`
+- `sansSerif`
+- `cursive`
+- `monospace`
+
+### Alignments
+
+Provide some helpful constants for alignment values.
+
+- `left`
+- `right`
+- `center`
