@@ -62,6 +62,9 @@
       if ((config == null ? void 0 : config.left) !== void 0) {
         this.left = config.left;
       }
+      if ((config == null ? void 0 : config.right) !== void 0) {
+        this.right = config.right;
+      }
       if ((config == null ? void 0 : config.top) !== void 0) {
         this.top = config.top;
       }
@@ -120,6 +123,13 @@
     }
     get left() {
       return extractNumber(this.el.style.left);
+    }
+    set right(value) {
+      this.el.style.position = "absolute";
+      this.el.style.right = String(value) + "px";
+    }
+    get right() {
+      return extractNumber(this.el.style.right);
     }
     set top(value) {
       this.el.style.position = "absolute";
