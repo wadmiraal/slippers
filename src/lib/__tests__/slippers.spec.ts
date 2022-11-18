@@ -1,19 +1,10 @@
 import { screen } from "@testing-library/dom";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
-import { App } from "../elements/App";
-import { Button, ButtonConfig } from "../elements/Button";
-import {
-  ContainerElement,
-  ContainerElementConfig,
-} from "../elements/ContainerElement";
-import { Keyboard, KeyboardConfig } from "../elements/Keyboard";
-import { LineOfText } from "../elements/LineOfText";
-import { Paragraph } from "../elements/Paragraph";
-import { Section } from "../elements/Section";
-import { TextElement, TextElementConfig } from "../elements/TextElement";
-import { Timer, TimerConfig } from "../elements/Timer";
-import { VisualElement, VisualElementConfig } from "../elements/VisualElement";
+import { ButtonConfig } from "../elements/Button";
+import { KeyboardConfig } from "../elements/Keyboard";
+import { LineOfText as LineOfTextEl } from "../elements/LineOfText";
+import { Timer as TimerEl, TimerConfig } from "../elements/Timer";
 import "../slippers";
 
 afterEach(() => {
@@ -21,6 +12,9 @@ afterEach(() => {
     document.body.removeChild(node);
   });
 });
+
+const { App, Button, Keyboard, LineOfText, Paragraph, Section, Timer } =
+  window as any;
 
 describe("basic components", () => {
   it("should handle simple interactions", () => {
@@ -71,8 +65,8 @@ describe("basic components", () => {
   });
 
   it("should allow container elements to remove child elements", () => {
-    let text: LineOfText;
-    const app = new App((text = new LineOfText({ text: "Some text" })));
+    let text: LineOfTextEl;
+    const app = App((text = LineOfText({ text: "Some text" })));
 
     expect(screen.getByText("Some text")).toBeInTheDocument();
     app.remove(text);
@@ -80,8 +74,8 @@ describe("basic components", () => {
   });
 
   it("should allow an element to remove itself", () => {
-    let text: LineOfText;
-    const app = new App((text = new LineOfText({ text: "Some text" })));
+    let text: LineOfTextEl;
+    const app = App((text = LineOfText({ text: "Some text" })));
 
     expect(screen.getByText("Some text")).toBeInTheDocument();
     text.delete();
@@ -89,26 +83,26 @@ describe("basic components", () => {
   });
 
   function renderBasicApp() {
-    let text: LineOfText;
-    new App(
-      new Section(
-        new Button({
+    let text: LineOfTextEl;
+    App(
+      Section(
+        Button({
           text: "Start",
           do: () => {
             text.text = "Clicked!";
           },
         }),
-        (text = new LineOfText({}))
+        (text = LineOfText({}))
       )
     );
   }
 
   function renderStyledApp() {
-    new App(
+    App(
       { width: 200, height: 200, borderColor: "red", borderRadius: 5 },
-      new Paragraph(
+      Paragraph(
         { backgroundColor: "blue", align: "right" },
-        new Button({
+        Button({
           font: "sans-serif",
           borderWidth: 1,
           borderStyle: "dashed",
@@ -119,7 +113,7 @@ describe("basic components", () => {
           left: 10,
           top: 20,
         }),
-        new LineOfText({
+        LineOfText({
           bold: false,
           italic: false,
         })
@@ -143,10 +137,10 @@ describe("keyboard", () => {
   });
 
   function renderKeyboardApp() {
-    let text: LineOfText;
-    new App(
-      (text = new LineOfText({ text: "No key pressed" })),
-      new Keyboard({
+    let text: LineOfTextEl;
+    App(
+      (text = LineOfText({ text: "No key pressed" })),
+      Keyboard({
         up: (key: string) => {
           text.text = `Pressed ${key}`;
         },
@@ -191,10 +185,10 @@ describe("timer", () => {
 
   it("should be stoppable, startable, and resetable", () => {
     let counter = 0;
-    const timer = new Timer({
+    const timer = Timer({
       freq: 100,
       do: (ellapsed) => (counter = ellapsed),
-    });
+    } as TimerConfig);
     expect(counter).toBe(0);
 
     // Not started yet
@@ -218,7 +212,7 @@ describe("timer", () => {
     expect(counter).toBe(300);
 
     // Changing the callback doesn't interrupt the timer.
-    timer.do = (ellapsed) => (counter = ellapsed + 50);
+    timer.do = (ellapsed: number) => (counter = ellapsed + 50);
     jest.runOnlyPendingTimers();
     expect(counter).toBe(450);
 
@@ -230,11 +224,11 @@ describe("timer", () => {
   });
 
   function renderTimerApp() {
-    let totalText: LineOfText, formattedText: LineOfText, timer: Timer;
-    new App(
-      (totalText = new LineOfText({ text: "Not started" })),
-      (formattedText = new LineOfText()),
-      (timer = new Timer({
+    let totalText: LineOfTextEl, formattedText: LineOfTextEl, timer: TimerEl;
+    App(
+      (totalText = LineOfText({ text: "Not started" })),
+      (formattedText = LineOfText()),
+      (timer = Timer({
         freq: 500,
         do: (totalMs: number, ms: number, s: number, m: number) => {
           totalText.text = `${totalMs} total`;
@@ -247,73 +241,24 @@ describe("timer", () => {
 });
 
 describe("configuration, setters, and getters", () => {
-  test("ContainerElement", () => {
-    const config: ContainerElementConfig = {
-      align: "right",
-    };
-    const container = new ContainerElement("DIV", config);
-
-    expect(config.align).toEqual(container.align);
-  });
-
-  test("TextElement", () => {
-    const config: TextElementConfig = {
-      text: "my text",
-      size: 12,
-      font: "Arial",
-      color: "red",
-      bold: true,
-      italic: false,
-    };
-    const text = new TextElement("SPAN", config);
-
-    expect(config.text).toEqual(text.text);
-    expect(config.size).toEqual(text.size);
-    expect(config.font).toEqual(text.font);
-    expect(config.color).toEqual(text.color);
-    expect(config.bold).toEqual(text.bold);
-    expect(config.italic).toEqual(text.italic);
-  });
-
-  test("VisualElement", () => {
-    const config: VisualElementConfig = {
-      backgroundColor: "gray",
-      borderColor: "blue",
-      borderRadius: 5,
-      borderWidth: 2,
-      borderStyle: "dotted",
-      left: 100,
-      top: 150,
-      width: 500,
-      height: 400,
-    };
-    const element = new VisualElement("DIV", config);
-
-    expect(config.backgroundColor).toEqual(element.backgroundColor);
-    expect(config.borderColor).toEqual(element.borderColor);
-    expect(config.borderRadius).toEqual(element.borderRadius);
-    expect(config.borderWidth).toEqual(element.borderWidth);
-    expect(config.borderStyle).toEqual(element.borderStyle);
-    expect(config.left).toEqual(element.left);
-    expect(config.top).toEqual(element.top);
-    expect(config.width).toEqual(element.width);
-    expect(config.height).toEqual(element.height);
-  });
-
   test("Button", () => {
     const config: ButtonConfig = {
-      do: () => {},
+      do: () => {
+        /* noop */
+      },
     };
-    const button = new Button(config);
+    const button = Button(config);
 
     expect(config.do).toEqual(button.do);
   });
 
   test("Keyboard", () => {
     const config: KeyboardConfig = {
-      up: () => {},
+      up: () => {
+        /* noop */
+      },
     };
-    const keyboard = new Keyboard(config);
+    const keyboard = Keyboard(config);
 
     expect(config.up).toEqual(keyboard.up);
   });
@@ -321,9 +266,11 @@ describe("configuration, setters, and getters", () => {
   test("Timer", () => {
     const config: TimerConfig = {
       freq: 2000,
-      do: () => {},
+      do: () => {
+        /* noop */
+      },
     };
-    const timer = new Timer(config);
+    const timer = Timer(config);
 
     expect(config.freq).toEqual(timer.freq);
     expect(config.do).toEqual(timer.do);
