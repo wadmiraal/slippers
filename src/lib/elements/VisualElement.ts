@@ -8,6 +8,7 @@ export interface VisualElementConfig {
   borderWidth?: number;
   borderStyle?: string;
   left?: number;
+  right?: number;
   top?: number;
   width?: number;
   height?: number;
@@ -39,6 +40,9 @@ export class VisualElement extends BaseElement {
     }
     if (config?.left !== undefined) {
       this.left = config.left;
+    }
+    if (config?.right !== undefined) {
+      this.right = config.right;
     }
     if (config?.top !== undefined) {
       this.top = config.top;
@@ -114,6 +118,15 @@ export class VisualElement extends BaseElement {
 
   get left() {
     return extractNumber(this.el.style.left);
+  }
+
+  set right(value: number) {
+    this.el.style.position = "absolute";
+    this.el.style.right = String(value) + "px";
+  }
+
+  get right() {
+    return extractNumber(this.el.style.right);
   }
 
   set top(value: number) {

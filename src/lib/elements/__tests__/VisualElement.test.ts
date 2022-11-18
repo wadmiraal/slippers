@@ -8,6 +8,7 @@ test("configuration, setters, and getters", () => {
     borderWidth: 2,
     borderStyle: "dotted",
     left: 100,
+    right: 120,
     top: 150,
     width: 500,
     height: 400,
@@ -20,6 +21,7 @@ test("configuration, setters, and getters", () => {
   expect(config.borderWidth).toEqual(element.borderWidth);
   expect(config.borderStyle).toEqual(element.borderStyle);
   expect(config.left).toEqual(element.left);
+  expect(config.right).toEqual(element.right);
   expect(config.top).toEqual(element.top);
   expect(config.width).toEqual(element.width);
   expect(config.height).toEqual(element.height);
