@@ -8,7 +8,7 @@ app = App(
     text: "Letters to guess"
     size: 20
     bold: yes
-    font: "sans-serif"
+    font: sansSerif
   )
 
   Keyboard(
@@ -24,7 +24,7 @@ app = App(
                 section.append(LineOfText(
                   text: key.toUpperCase()
                   bold: yes
-                  font: "sans-serif"
+                  font: sansSerif
                 ));
   )
 
@@ -62,7 +62,7 @@ for letter, i in word
       height: 20
       width: 20
       top: 50
-      align: "center"
+      align: center
       left: 5 + (i * 30)
     )
     app.append(section);
