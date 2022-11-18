@@ -54,7 +54,7 @@ App(
     text = LineOfText(
       text: "00:00.000"
       size: 32
-      font: "sans-serif"
+      font: sansSerif
     )
   )
 )

@@ -22,7 +22,7 @@ App(
     align: right
     
     text = LineOfText(
-      font: "monospace"
+      font: monospace
       size: 20
     )
   )
