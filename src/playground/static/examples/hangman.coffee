@@ -4,7 +4,7 @@ app = App(
   width: 800
   height: 400
 
-  LineOfText(
+  Text(
     text: "Letters to guess"
     size: 20
     bold: yes
@@ -21,7 +21,7 @@ app = App(
             guessed[key] = yes;
             for section in letters[key]
               do (section) ->
-                section.append(LineOfText(
+                section.append(Text(
                   text: key.toUpperCase()
                   bold: yes
                   font: sansSerif

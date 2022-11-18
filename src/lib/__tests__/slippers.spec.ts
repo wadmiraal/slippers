@@ -3,7 +3,7 @@ import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import { ButtonConfig } from "../elements/Button";
 import { KeyboardConfig } from "../elements/Keyboard";
-import { LineOfText as LineOfTextEl } from "../elements/LineOfText";
+import { Text as TextEl } from "../elements/Text";
 import { Timer as TimerEl, TimerConfig } from "../elements/Timer";
 import "../slippers";
 import { EnrichedWindow } from "../types";
@@ -14,7 +14,7 @@ afterEach(() => {
   });
 });
 
-const { App, Button, Keyboard, LineOfText, Paragraph, Section, Timer } =
+const { App, Button, Keyboard, Text, Paragraph, Section, Timer } =
   window as unknown as EnrichedWindow;
 
 describe("basic components", () => {
@@ -66,8 +66,8 @@ describe("basic components", () => {
   });
 
   it("should allow container elements to remove child elements", () => {
-    let text: LineOfTextEl;
-    const app = App((text = LineOfText({ text: "Some text" })));
+    let text: TextEl;
+    const app = App((text = Text({ text: "Some text" })));
 
     expect(screen.getByText("Some text")).toBeInTheDocument();
     app.remove(text);
@@ -75,8 +75,8 @@ describe("basic components", () => {
   });
 
   it("should allow an element to remove itself", () => {
-    let text: LineOfTextEl;
-    const app = App((text = LineOfText({ text: "Some text" })));
+    let text: TextEl;
+    const app = App((text = Text({ text: "Some text" })));
 
     expect(screen.getByText("Some text")).toBeInTheDocument();
     text.delete();
@@ -84,7 +84,7 @@ describe("basic components", () => {
   });
 
   function renderBasicApp() {
-    let text: LineOfTextEl;
+    let text: TextEl;
     App(
       Section(
         Button({
@@ -93,7 +93,7 @@ describe("basic components", () => {
             text.text = "Clicked!";
           },
         }),
-        (text = LineOfText({}))
+        (text = Text({}))
       )
     );
   }
@@ -114,7 +114,7 @@ describe("basic components", () => {
           left: 10,
           top: 20,
         }),
-        LineOfText({
+        Text({
           bold: false,
           italic: false,
         })
@@ -138,9 +138,9 @@ describe("keyboard", () => {
   });
 
   function renderKeyboardApp() {
-    let text: LineOfTextEl;
+    let text: TextEl;
     App(
-      (text = LineOfText({ text: "No key pressed" })),
+      (text = Text({ text: "No key pressed" })),
       Keyboard({
         up: (key: string) => {
           text.text = `Pressed ${key}`;
@@ -225,10 +225,10 @@ describe("timer", () => {
   });
 
   function renderTimerApp() {
-    let totalText: LineOfTextEl, formattedText: LineOfTextEl, timer: TimerEl;
+    let totalText: TextEl, formattedText: TextEl, timer: TimerEl;
     App(
-      (totalText = LineOfText({ text: "Not started" })),
-      (formattedText = LineOfText()),
+      (totalText = Text({ text: "Not started" })),
+      (formattedText = Text()),
       (timer = Timer({
         freq: 500,
         do: (totalMs: number, ms: number, s: number, m: number) => {

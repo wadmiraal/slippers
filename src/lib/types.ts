@@ -4,9 +4,9 @@ import { Button, ButtonConfig } from "./elements/Button";
 import { Canvas, CanvasConfig } from "./elements/Canvas";
 import { ContainerElementConfig } from "./elements/ContainerElement";
 import { Keyboard, KeyboardConfig } from "./elements/Keyboard";
-import { LineOfText } from "./elements/LineOfText";
 import { Paragraph } from "./elements/Paragraph";
 import { Section } from "./elements/Section";
+import { Text } from "./elements/Text";
 import { TextElementConfig } from "./elements/TextElement";
 import { Timer, TimerConfig } from "./elements/Timer";
 
@@ -20,9 +20,9 @@ export interface EnrichedWindow extends Window {
   Button: (config: ButtonConfig) => Button;
   Canvas: (...args: Args<CanvasConfig>) => Canvas;
   Keyboard: (config: KeyboardConfig) => Keyboard;
-  LineOfText: (config?: TextElementConfig) => LineOfText;
   Paragraph: (...args: Args<ContainerElementConfig>) => Paragraph;
   Section: (...args: Args<ContainerElementConfig>) => Section;
+  Text: (config?: TextElementConfig) => Text;
   Timer: (config: TimerConfig) => Timer;
 
   moveTo: (
