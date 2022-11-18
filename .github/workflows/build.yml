@@ -1,4 +1,4 @@
-name: build
+name: build and deploy
 on:
   push:
     branches:
@@ -6,7 +6,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -14,8 +14,12 @@ jobs:
           fetch-depth: 0
       - run: npm ci
       - run: npm test
+      - run: npm run build
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build
