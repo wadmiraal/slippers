@@ -21,7 +21,7 @@ App(
     top: 20
     align: right
     
-    text = LineOfText(
+    text = Text(
       font: monospace
       size: 20
     )

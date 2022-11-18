@@ -361,13 +361,6 @@
     }
   };
 
-  // src/lib/elements/LineOfText.ts
-  var LineOfText = class extends TextElement {
-    constructor(config) {
-      super("SPAN", config);
-    }
-  };
-
   // src/lib/elements/Paragraph.ts
   var Paragraph = class extends ContainerElement {
     constructor(...args) {
@@ -391,6 +384,13 @@
           this.append(child);
         }
       });
+    }
+  };
+
+  // src/lib/elements/Text.ts
+  var Text = class extends TextElement {
+    constructor(config) {
+      super("SPAN", config);
     }
   };
 
@@ -466,7 +466,7 @@
   window.Button = (config) => new Button(config);
   window.Canvas = (...args) => new Canvas(...args);
   window.Keyboard = (config) => new Keyboard(config);
-  window.LineOfText = (config) => new LineOfText(config);
+  window.Text = (config) => new Text(config);
   window.Paragraph = (...args) => new Paragraph(...args);
   window.Section = (...args) => new Section(...args);
   window.Timer = (config) => new Timer(config);
