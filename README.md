@@ -2,7 +2,7 @@
 
 Inspired by \_why's [Shoes](http://shoesrb.com/) and [ART && CODE talk](https://vimeo.com/5047563). How can we make programming simple and fun in today's web-dominated world?
 
-See some examples [here](https://wadmiraal.github.io/slippers/index.html).
+You can play around with Slippers [here](https://wadmiraal.github.io/slippers/index.html).
 
 # Manifesto
 
@@ -41,9 +41,9 @@ For positioning, we should make any object follow the HTML document flow, _unles
 
 ## Handy constants
 
-### Colors
+Provide some helpful constants, similar to using `yes` or `no` for `true` or `false`. See the [examples](src/playground/static/examples/).
 
-Provide some helpful constants for color codes.
+### Colors
 
 - `aqua`
 - `black`
@@ -66,16 +66,12 @@ Provide some helpful constants for color codes.
 
 ### Fonts
 
-Provide some helpful constants for font families.
-
 - `serif`
 - `sansSerif`
 - `cursive`
 - `monospace`
 
 ### Alignments
-
-Provide some helpful constants for alignment values.
 
 - `left`
 - `right`
