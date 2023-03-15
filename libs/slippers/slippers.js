@@ -486,6 +486,9 @@
   window.left = "left";
   window.center = "center";
   window.right = "right";
+  window.solid = "solid";
+  window.dotted = "dotted";
+  window.dashed = "dashed";
   window.serif = "serif";
   window.sansSerif = "sans-serif";
   window.cursive = "cursive";

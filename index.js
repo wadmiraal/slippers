@@ -5667,17 +5667,35 @@ ${e}`;
       }
     });
   }
+  function handleShowHelp() {
+    var _a;
+    const modal = document.getElementById("help-modal");
+    if (modal) {
+      modal.style.display = "block";
+      (_a = document.getElementById("hide-help")) == null ? void 0 : _a.addEventListener("click", handleHideHelp);
+    }
+  }
+  function handleHideHelp() {
+    var _a;
+    const modal = document.getElementById("help-modal");
+    if (modal) {
+      modal.style.display = "none";
+      (_a = document.getElementById("hide-help")) == null ? void 0 : _a.removeEventListener("click", handleHideHelp);
+    }
+  }
   function __attach() {
-    var _a, _b, _c;
+    var _a, _b, _c, _d;
     (_a = document.getElementById("play")) == null ? void 0 : _a.addEventListener("click", handlePlay);
     (_b = document.getElementById("reset")) == null ? void 0 : _b.addEventListener("click", handleReset);
     (_c = document.getElementById("select-example")) == null ? void 0 : _c.addEventListener("change", handleChangeExample);
+    (_d = document.getElementById("show-help")) == null ? void 0 : _d.addEventListener("click", handleShowHelp);
   }
   function __detach() {
-    var _a, _b, _c;
+    var _a, _b, _c, _d;
     (_a = document.getElementById("play")) == null ? void 0 : _a.removeEventListener("click", handlePlay);
     (_b = document.getElementById("reset")) == null ? void 0 : _b.removeEventListener("click", handleReset);
     (_c = document.getElementById("select-example")) == null ? void 0 : _c.removeEventListener("change", handleChangeExample);
+    (_d = document.getElementById("show-help")) == null ? void 0 : _d.removeEventListener("click", handleShowHelp);
   }
   __attach();
   var editor = window.ace.edit("editor");
