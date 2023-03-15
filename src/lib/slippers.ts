@@ -48,6 +48,10 @@ import { Args, EnrichedWindow } from "./types";
 (window as any).center = "center";
 (window as any).right = "right";
 
+(window as any).solid = "solid";
+(window as any).dotted = "dotted";
+(window as any).dashed = "dashed";
+
 (window as any).serif = "serif";
 (window as any).sansSerif = "sans-serif";
 (window as any).cursive = "cursive";

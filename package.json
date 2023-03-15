@@ -7,10 +7,11 @@
   "license": "MIT",
   "main": "src/lib/slippers.ts",
   "scripts": {
+    "copy:static": "cp src/playground/index.html build/ && cp -r src/playground/static/* build/",
     "build:lib": "esbuild src/lib/slippers.ts --bundle --outfile=build/libs/slippers/slippers.js",
-    "build:playground": "esbuild src/playground/index.ts --bundle --outfile=build/index.js && cp src/playground/index.html build/ && cp -r src/playground/static/* build/",
+    "build:playground": "esbuild src/playground/index.ts --bundle --outfile=build/index.js && npm run copy:static",
     "build": "npm run build:lib && npm run build:playground",
-    "dev": "esbuild --bundle src/playground/index.ts --outfile=build/index.js --servedir=build",
+    "dev": "npm run copy:static && esbuild --bundle src/playground/index.ts --outfile=build/index.js --servedir=build",
     "test": "jest"
   },
   "dependencies": {

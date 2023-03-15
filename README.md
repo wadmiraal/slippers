@@ -76,3 +76,9 @@ Provide some helpful constants, similar to using `yes` or `no` for `true` or `fa
 - `left`
 - `right`
 - `center`
+
+### Border styles
+
+- `solid`
+- `dashed`
+- `dotted`

@@ -28,7 +28,7 @@ App(
     bold: yes
     size: 16
     do: () ->
-      text.text = "00:00.000";
+      text.text = "00:00.0000";
       timer.reset()
   )
 
@@ -36,9 +36,11 @@ App(
     freq: 10
     do: (_, ms, s, m) ->
       if ms.toString().length == 1
-        millis = "00" + ms
+        millis = "000" + ms
       else if ms.toString().length == 2
-        millis = "0" + ms
+        millis = "00" + ms
+      else if ms.toString().length == 3
+        millis = "000" + ms
       else
         millis = ms
       seconds = if s.toString().length == 1 then "0" + s else s;
@@ -52,7 +54,7 @@ App(
     align: "center"
     
     text = Text(
-      text: "00:00.000"
+      text: "00:00.0000"
       size: 32
       font: sansSerif
     )

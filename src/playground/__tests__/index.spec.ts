@@ -177,8 +177,24 @@ describe("playground", () => {
     expect(await screen.findByText(/File Not Found/)).toBeInTheDocument();
   });
 
+  it("should correctly display help when requested", async () => {
+    renderPlayground();
+
+    await userEvent.click(screen.getByRole("button", { name: "Show help" }));
+    expect(
+      screen.getByRole("heading", { name: "How to use Slippers?" })
+    ).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole("button", { name: "Close" }));
+    expect(
+      screen.queryByRole("heading", { name: "How to use Slippers?" })
+    ).not.toBeInTheDocument();
+  });
+
   function renderPlayground() {
     document.body.innerHTML = `
+      <button id="show-help">Show help</button>
+
       <label for="select-example">Load example:</label>
       <select id="select-example">
         <option value="stopwatch">stopwatch.coffee</option>
@@ -190,6 +206,11 @@ describe("playground", () => {
 
       <div id="editor" />
       <div id="result" />
+
+      <div id="help-modal" style="display:none">
+        <h2>How to use Slippers?</h2>
+        <button id="hide-help">Close</button>
+      </div>
     `;
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires

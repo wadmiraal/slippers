@@ -80,6 +80,26 @@ async function handleChangeExample(e: Event) {
   }
 }
 
+function handleShowHelp() {
+  const modal = document.getElementById("help-modal");
+  if (modal) {
+    modal.style.display = "block";
+    document
+      .getElementById("hide-help")
+      ?.addEventListener("click", handleHideHelp);
+  }
+}
+
+function handleHideHelp() {
+  const modal = document.getElementById("help-modal");
+  if (modal) {
+    modal.style.display = "none";
+    document
+      .getElementById("hide-help")
+      ?.removeEventListener("click", handleHideHelp);
+  }
+}
+
 export function __attach() {
   // Run the code.
   document.getElementById("play")?.addEventListener("click", handlePlay);
@@ -91,6 +111,11 @@ export function __attach() {
   document
     .getElementById("select-example")
     ?.addEventListener("change", handleChangeExample);
+
+  // Show the help modal.
+  document
+    .getElementById("show-help")
+    ?.addEventListener("click", handleShowHelp);
 }
 
 export function __detach() {
@@ -99,6 +124,9 @@ export function __detach() {
   document
     .getElementById("select-example")
     ?.removeEventListener("change", handleChangeExample);
+  document
+    .getElementById("show-help")
+    ?.removeEventListener("click", handleShowHelp);
 }
 
 __attach();
