@@ -141,6 +141,11 @@
       #help-modal {
         display: none;
       }
+
+      #help-modal pre {
+        padding: 1em;
+        background-color: azure;
+      }
     </style>
   </head>
   <body>
@@ -290,8 +295,8 @@ App(
           </p>
           <p>
             Next, you can "nest" other elements inside your
-            <code>App</code> "frame". For example, how about a button that says
-            "Hello!":
+            <code>App</code> "frame". For example, how about a line of text that
+            says "Hello!":
           </p>
           <pre>
 App(
@@ -306,17 +311,25 @@ App(
 )
           </pre>
           <p>
-            Notice the <code>do: () -></code> line. This is what's called a
-            "callback", and it will get executed everytime the button is
-            clicked. The indented lines underneath this
-            <code>do:</code> parameter are all part of this callback.
+            Notice we keep "indenting" the code. This allows the program to
+            understand the relationship between the elements and their
+            parameters (more on that in a moment).
           </p>
           <p>
-            You can also keep a reference to an element by assigning it to a
-            "variable". You can then use this variable to manipulate the
-            original element later on. For instance, let's imagine you change
-            the label of the button from "Never clicked" to "Clicked!" once you
-            click on it:
+            You may also have noticed the <code>do: () -></code> line. This is
+            what's called a "callback", and it will get executed everytime the
+            button is clicked (more on that in a moment). The indented lines
+            underneath this <code>do:</code> parameter are all part of this
+            callback.
+          </p>
+          <p>
+            You can keep a reference to an element by assigning it to a
+            "variable". You must give it a name, and it can be whatever you
+            want. Just use an equal sign (<code>=</code>) to "assign" your
+            element to your variable. You can then use this variable to
+            manipulate the original element later on. For instance, let's
+            imagine you change the label of the button from "Never clicked" to
+            "Clicked!" once you click on it:
           </p>
           <pre>
 App(
@@ -330,6 +343,32 @@ App(
   )
 )
           </pre>
+          <p>
+            As you may have noticed, each element can receive some
+            <em>parameters</em>, like <code>width</code>, <code>height</code>,
+            <code>bold</code>, <code>italic</code>, etc. These are typically
+            passed when defining the element, like in the examples above. If an
+            element is assigned to a variable, you may have noticed that you can
+            change any of the parameters whenever you want, like so:
+          </p>
+          <pre>
+App(
+  myButton = Button(
+    backgroundColor: red
+    text: "Was I ever clicked?"
+    bold: no
+    do: () ->
+      myButton.backgroundColor = green
+      myButton.text = "I was clicked!"
+      myButton.bold = yes
+  )
+)
+          </pre>
+          Note that, when passing the parameters as we initially create the
+          element, we use a colon (<code>:</code>, e.g.,
+          <code>backgroundColor: red</code>). However, when updating the
+          parameter later, we use an equal sign (<code>=</code>, e.g.,
+          <code>myButton.backgroundColor = green</code>).
           <p>
             You can use a multitude of elements, and some can have nested
             elements of their own. For example, you can group multiple elements
@@ -420,12 +459,83 @@ Button(
   height?: &lt;number&gt;
 )
           </pre>
+          <h4><code>Paragraph</code></h4>
+          <p>
+            A <code>Paragraph</code> element is simply a way to group other
+            elements together, usually <code>Text</code> elements.
+          </p>
+          <h5>Possible parameters</h5>
+          <pre>
+Paragraph(
+  width: &lt;number&gt;
+  height: &lt;number&gt;
+  align: left | right | center
+  backgroundColor: &lt;string&gt;
+  borderColor: &lt;string&gt;
+  borderRadius: &lt;number&gt;
+  borderWidth: &lt;number&gt;
+  borderStyle: &lt;string&gt;
+  left: &lt;number&gt;
+  right: &lt;number&gt;
+  top: &lt;number&gt;
+)
+          </pre>
+          <h4><code>Section</code></h4>
+          <p>
+            Similar to a <code>Paragraph</code>, a <code>Section</code> is used
+            to group elements together. A <code>Section</code> element can
+            contain other <code>Section</code> elements, which can be useful for
+            creating a grid-like structure.
+          </p>
+          <h5>Possible parameters</h5>
+          <pre>
+Section(
+  width: &lt;number&gt;
+  height: &lt;number&gt;
+  align: left | right | center
+  backgroundColor: &lt;string&gt;
+  borderColor: &lt;string&gt;
+  borderRadius: &lt;number&gt;
+  borderWidth: &lt;number&gt;
+  borderStyle: &lt;string&gt;
+  left: &lt;number&gt;
+  right: &lt;number&gt;
+  top: &lt;number&gt;
+)
+          </pre>
+          <h4><code>Text</code></h4>
+          <p>
+            As its name suggests, a <code>Text</code> element is used to write
+            text on screen.
+          </p>
+          <h5>Possible parameters</h5>
+          <pre>
+Text(
+  text?: &lt;string&gt;
+  size?: &lt;number&gt;
+  font?: serif | sansSerif | cursive | monospace
+  color?: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
+  bold?: yes | no
+  italic?: yes | no
+  backgroundColor?: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
+  borderColor?: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
+  borderRadius?: &lt;number&gt;
+  borderWidth?: &lt;number&gt;
+  borderStyle?: solid | dotted | dashed
+  left?: &lt;number&gt;
+  right?: &lt;number&gt;
+  top?: &lt;number&gt;
+  width?: &lt;number&gt;
+  height?: &lt;number&gt;
+)
+          </pre>
           <h4><code>Canvas</code></h4>
           <p>
             <code>Canvas</code> elements allow you to draw lines and shapes.
             It's actually quite powerful, although Slippers only provides the
             most basic helpers to get you started. If you want to draw more
-            complex shapes, you should read on the
+            complex shapes, you will need some deeper HTML and JS knowledge, and
+            read more about the
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API"
               >official HTML Canvas API</a
@@ -438,27 +548,31 @@ Button(
             <li>
               <code>moveTo(x, y)</code>: This "moves" the starting point of the
               next instruction on the canvas. By default, all drawings start at
-              0,0.
+              0,0 (which is the top left corner).
             </li>
             <li>
               <code>drawLine(x, y)</code>: This draws a straight line from the
-              current starting point (see `moveTo()`), to the coordinates passed
-              to the function. Once the line is drawn, the starting point of the
-              next instruction will be the end of the drawn line.
+              current starting point (see <code>moveTo()</code>), to the
+              coordinates passed to the function. Once the line is drawn, the
+              starting point of the next instruction will be the end of the
+              drawn line.
             </li>
             <li>
-              <code>drawCircle(x, y, r)</code>: This draws a circle, centered
-              around the passed coordinates. Once the circle is drawn, the
-              starting point of the next instruction will be the center of the
-              drawn circle.
+              <code>drawCircle(x, y, radius)</code>: This draws a circle
+              centered around the passed coordinates. Once the circle is drawn,
+              the starting point of the next instruction will be the center of
+              the drawn circle.
             </li>
           </ul>
           <h5>Example</h5>
           <p>Here is an example, drawing a simple stick figure:</p>
           <pre>
 App(
+  width: 440
+  height: 380
+
   Canvas(
-    width: 400
+    width: 440
     height: 380
     lineWidth: 4
     color: black
@@ -507,20 +621,111 @@ Canvas(
 )
           </pre>
           <h4><code>Keyboard</code></h4>
+          <p>
+            The <code>Keyboard</code> element is special in that it's not
+            anything you can "see". Instead, it allows you to react on keys
+            being pressed on the keyboard. It only accepts a single parameter
+            <code>up</code>, which is a callback. This callback will receive the
+            key pressed as an argument, like so:
+          </p>
+          <pre>
+App(
+  myText = Text(
+    text: "No key pressed yet..."
+  )
+
+  Keyboard(
+    up: (key) ->
+      myText.text = "Pressed '" + key + "'!"
+  )
+)
+          </pre>
+          <p>
+            This can be used to manipulate other elements, even create little
+            games! Here is an example where we move a square using the arrows:
+          </p>
+          <pre>
+App(
+  width: 300
+  height: 300
+  
+  square = Section(
+    width: 30
+    height: 30
+    backgroundColor: black
+    top: 50
+    left: 50
+  )
+
+  Keyboard(
+    up: (key) ->
+      if key == "ArrowLeft"
+        square.left = square.left - 5
+      else if key == "ArrowRight"
+        square.left = square.left + 5
+      else if key == "ArrowUp"
+        square.top = square.top - 5
+      else if key == "ArrowDown"
+        square.top = square.top + 5
+  )
+)
+          </pre>
           <h5>Possible parameters</h5>
-          <pre></pre>
-          <h4><code>Paragraph</code></h4>
-          <h5>Possible parameters</h5>
-          <pre></pre>
-          <h4><code>Section</code></h4>
-          <h5>Possible parameters</h5>
-          <pre></pre>
-          <h4><code>Text</code></h4>
-          <h5>Possible parameters</h5>
-          <pre></pre>
+          <pre>
+Keyboard(
+  up: &lt;function&gt;
+)
+          </pre>
           <h4><code>Timer</code></h4>
+          <p>
+            Just like <code>Keyboard</code>, <code>Timer</code> is not a visual
+            element; you cannot "see" it. Instead, it will start a "ticker" that
+            will trigger a callback at regular intervals. The shortest interval
+            possible is 1 millisecond.
+          </p>
+          <p>
+            Here is an example that simply shows the amount of seconds that have
+            ellapsed since starting the app:
+          </p>
+          <pre>
+App(
+  width: 300
+  height: 300
+  
+  myText = Text(
+    text: "0s"
+  )
+  
+  timer = Timer(
+    do: (ellapsed) ->
+      myText.text = (ellapsed / 1000) + "s"
+  )
+  timer.start()
+)
+          </pre>
+          <p>
+            Note that we have to assign the <code>Timer</code> to a variable,
+            and explicitly call <code>.start()</code>. Unless we start it, the
+            timer will not execute.
+          </p>
+          <p>
+            Once assigned to a variable, a <code>Timer</code> can be started
+            (<code>.start()</code>), stopped (<code>.stop()</code>), or
+            restarted (<code>.restart()</code>). It can also be reinitialized
+            (<code>.reset()</code>).
+          </p>
+          <p>
+            The <code>Timer</code> will execute once a second by default. This
+            frequency can be changed by the <code>freq</code> parameter, which
+            is a number expressed in milliseconds.
+          </p>
           <h5>Possible parameters</h5>
-          <pre></pre>
+          <pre>
+Timer(
+  freq: &lt;number&gt;
+  do: &lt;function&gt;
+)
+          </pre>
         </div>
 
         <div class="modal-footer">

@@ -133,5 +133,5 @@ __attach();
 
 // Init the ACE editor.
 const editor = (window as any).ace.edit("editor");
-editor.setTheme("ace/theme/github");
+editor.setTheme("ace/theme/tomorrow");
 editor.session.setMode("ace/mode/coffee");
