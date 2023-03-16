@@ -5699,6 +5699,6 @@ ${e}`;
   }
   __attach();
   var editor = window.ace.edit("editor");
-  editor.setTheme("ace/theme/github");
+  editor.setTheme("ace/theme/tomorrow");
   editor.session.setMode("ace/mode/coffee");
 })();
