@@ -2,7 +2,7 @@
 
 Inspired by \_why's [Shoes](http://shoesrb.com/) and [ART && CODE talk](https://vimeo.com/5047563). How can we make programming simple and fun in today's web-dominated world?
 
-You can play around with Slippers [here](https://wadmiraal.github.io/slippers/index.html).
+You can play around with Slippers in your browser [here](https://wadmiraal.github.io/slippers/index.html). You can see some examples [here](src/playground/static/examples/).
 
 # Manifesto
 
@@ -37,11 +37,11 @@ For positioning, we should make any object follow the HTML document flow, _unles
 
 ## Simplified event management
 
-...
+Handling events should be simplified as much as possible to provide a low barrier of entry. To do this, we must provide some simple tools that can help start creating fun little apps, with little to no knowledge of event handling, bubbling, etc.
 
 ## Handy constants
 
-Provide some helpful constants, similar to using `yes` or `no` for `true` or `false`. See the [examples](src/playground/static/examples/).
+Provide some helpful constants, similar to using `yes` or `no` for `true` or `false`.
 
 ### Colors
 
