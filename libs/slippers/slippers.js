@@ -371,6 +371,16 @@
     }
   };
 
+  // src/lib/elements/Link.ts
+  var Link = class extends TextElement {
+    constructor(config) {
+      super("A", config);
+      if (config == null ? void 0 : config.to) {
+        this.el.setAttribute("href", config.to);
+      }
+    }
+  };
+
   // src/lib/elements/Paragraph.ts
   var Paragraph = class extends ContainerElement {
     constructor(...args) {
@@ -477,6 +487,7 @@
   window.Canvas = (...args) => new Canvas(...args);
   window.Keyboard = (config) => new Keyboard(config);
   window.Text = (config) => new Text(config);
+  window.Link = (config) => new Link(config);
   window.Paragraph = (...args) => new Paragraph(...args);
   window.Section = (...args) => new Section(...args);
   window.Timer = (config) => new Timer(config);
