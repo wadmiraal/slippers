@@ -14,7 +14,7 @@ afterEach(() => {
   });
 });
 
-const { App, Button, Keyboard, Text, Paragraph, Section, Timer } =
+const { App, Button, Keyboard, Text, Link, Paragraph, Section, Timer } =
   window as unknown as EnrichedWindow;
 
 describe("basic components", () => {
@@ -23,6 +23,9 @@ describe("basic components", () => {
     expect(screen.queryByText("Clicked!")).not.toBeInTheDocument();
     screen.getByRole("button", { name: "Start" }).click();
     expect(screen.getByText("Clicked!")).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "Link to example.com" })
+    ).toHaveAttribute("href", "http://example.com");
   });
 
   it("should handle styling correctly", () => {
@@ -93,7 +96,11 @@ describe("basic components", () => {
             text.text = "Clicked!";
           },
         }),
-        (text = Text({}))
+        (text = Text({})),
+        Link({
+          text: "Link to example.com",
+          to: "http://example.com",
+        })
       )
     );
   }

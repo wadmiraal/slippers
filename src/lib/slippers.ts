@@ -9,6 +9,7 @@ import {
 } from "./elements/Canvas";
 import { ContainerElementConfig } from "./elements/ContainerElement";
 import { Keyboard, KeyboardConfig } from "./elements/Keyboard";
+import { Link, LinkConfig } from "./elements/Link";
 import { Paragraph } from "./elements/Paragraph";
 import { Section } from "./elements/Section";
 import { Text } from "./elements/Text";
@@ -28,6 +29,8 @@ import { Args, EnrichedWindow } from "./types";
   new Keyboard(config);
 (window as unknown as EnrichedWindow).Text = (config?: TextElementConfig) =>
   new Text(config);
+(window as unknown as EnrichedWindow).Link = (config?: LinkConfig) =>
+  new Link(config);
 (window as unknown as EnrichedWindow).Paragraph = (
   ...args: Args<ContainerElementConfig>
 ) => new Paragraph(...args);

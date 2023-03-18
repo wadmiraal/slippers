@@ -4,6 +4,7 @@ import { Button, ButtonConfig } from "./elements/Button";
 import { Canvas, CanvasConfig } from "./elements/Canvas";
 import { ContainerElementConfig } from "./elements/ContainerElement";
 import { Keyboard, KeyboardConfig } from "./elements/Keyboard";
+import { Link, LinkConfig } from "./elements/Link";
 import { Paragraph } from "./elements/Paragraph";
 import { Section } from "./elements/Section";
 import { Text } from "./elements/Text";
@@ -23,6 +24,7 @@ export interface EnrichedWindow extends Window {
   Paragraph: (...args: Args<ContainerElementConfig>) => Paragraph;
   Section: (...args: Args<ContainerElementConfig>) => Section;
   Text: (config?: TextElementConfig) => Text;
+  Link: (config?: LinkConfig) => Link;
   Timer: (config: TimerConfig) => Timer;
 
   moveTo: (

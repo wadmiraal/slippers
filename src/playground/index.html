@@ -443,22 +443,22 @@ App(
           <pre>
 Button(
   do: &lt;function&gt;
-  text?: &lt;string&gt;
-  size?: &lt;number&gt;
-  font?: serif | sansSerif | cursive | monospace
-  color?: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
-  bold?: yes | no
-  italic?: yes | no
-  backgroundColor?: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
-  borderColor?: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
-  borderRadius?: &lt;number&gt;
-  borderWidth?: &lt;number&gt;
-  borderStyle?: solid | dotted | dashed
-  left?: &lt;number&gt;
-  right?: &lt;number&gt;
-  top?: &lt;number&gt;
-  width?: &lt;number&gt;
-  height?: &lt;number&gt;
+  text: &lt;string&gt;
+  size: &lt;number&gt;
+  font: serif | sansSerif | cursive | monospace
+  color: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
+  bold: yes | no
+  italic: yes | no
+  backgroundColor: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
+  borderColor: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
+  borderRadius: &lt;number&gt;
+  borderWidth: &lt;number&gt;
+  borderStyle: solid | dotted | dashed
+  left: &lt;number&gt;
+  right: &lt;number&gt;
+  top: &lt;number&gt;
+  width: &lt;number&gt;
+  height: &lt;number&gt;
 )
           </pre>
           <h4><code>Paragraph</code></h4>
@@ -513,22 +513,49 @@ Section(
           <h5>Possible parameters</h5>
           <pre>
 Text(
-  text?: &lt;string&gt;
-  size?: &lt;number&gt;
-  font?: serif | sansSerif | cursive | monospace
-  color?: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
-  bold?: yes | no
-  italic?: yes | no
-  backgroundColor?: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
-  borderColor?: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
-  borderRadius?: &lt;number&gt;
-  borderWidth?: &lt;number&gt;
-  borderStyle?: solid | dotted | dashed
-  left?: &lt;number&gt;
-  right?: &lt;number&gt;
-  top?: &lt;number&gt;
-  width?: &lt;number&gt;
-  height?: &lt;number&gt;
+  text: &lt;string&gt;
+  size: &lt;number&gt;
+  font: serif | sansSerif | cursive | monospace
+  color: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
+  bold: yes | no
+  italic: yes | no
+  backgroundColor: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
+  borderColor: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
+  borderRadius: &lt;number&gt;
+  borderWidth: &lt;number&gt;
+  borderStyle: solid | dotted | dashed
+  left: &lt;number&gt;
+  right: &lt;number&gt;
+  top: &lt;number&gt;
+  width: &lt;number&gt;
+  height: &lt;number&gt;
+)
+          </pre>
+          <h4><code>Link</code></h4>
+          <p>
+            A <code>Link</code> element allows you to add a, well, link to
+            another web page.
+          </p>
+          <h5>Possible parameters</h5>
+          <pre>
+Link(
+  to: &lt;string&gt;
+  text: &lt;string&gt;
+  size: &lt;number&gt;
+  font: serif | sansSerif | cursive | monospace
+  color: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
+  bold: yes | no
+  italic: yes | no
+  backgroundColor: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
+  borderColor: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
+  borderRadius: &lt;number&gt;
+  borderWidth: &lt;number&gt;
+  borderStyle: solid | dotted | dashed
+  left: &lt;number&gt;
+  right: &lt;number&gt;
+  top: &lt;number&gt;
+  width: &lt;number&gt;
+  height: &lt;number&gt;
 )
           </pre>
           <h4><code>Canvas</code></h4>
@@ -607,19 +634,19 @@ App(
           <h5>Possible parameters</h5>
           <pre>
 Canvas(
-  color?: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
-  lineWidth?: &lt;number&gt;
-  align?: left | center | right
-  backgroundColor?: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
-  borderColor?: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
-  borderRadius?: &lt;number&gt;
-  borderWidth?: &lt;number&gt;
-  borderStyle?: solid | dotted | dashed
-  left?: &lt;number&gt;
-  right?: &lt;number&gt;
-  top?: &lt;number&gt;
-  width?: &lt;number&gt;
-  height?: &lt;number&gt;
+  color: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
+  lineWidth: &lt;number&gt;
+  align: left | center | right
+  backgroundColor: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
+  borderColor: aqua | black | blue | cyan | fuchsia | gray | green | lightGray | lightGreen | lime | maroon | navy | olive | purple | red | teal | white | yellow
+  borderRadius: &lt;number&gt;
+  borderWidth: &lt;number&gt;
+  borderStyle: solid | dotted | dashed
+  left: &lt;number&gt;
+  right: &lt;number&gt;
+  top: &lt;number&gt;
+  width: &lt;number&gt;
+  height: &lt;number&gt;
 )
           </pre>
           <h4><code>Keyboard</code></h4>
