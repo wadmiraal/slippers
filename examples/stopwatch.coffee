@@ -40,7 +40,7 @@ App(
       else if ms.toString().length == 2
         millis = "00" + ms
       else if ms.toString().length == 3
-        millis = "000" + ms
+        millis = "0" + ms
       else
         millis = ms
       seconds = if s.toString().length == 1 then "0" + s else s;
