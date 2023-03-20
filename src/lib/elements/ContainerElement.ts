@@ -5,7 +5,7 @@ export interface ContainerElementConfig extends VisualElementConfig {
   align?: "left" | "center" | "right";
 }
 
-export class ContainerElement extends VisualElement {
+export class ContainerElement<T extends HTMLElement> extends VisualElement<T> {
   constructor(tagName: string, config?: ContainerElementConfig) {
     super(tagName, config);
 

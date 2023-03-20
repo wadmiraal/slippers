@@ -9,6 +9,7 @@ import { Paragraph } from "./elements/Paragraph";
 import { Section } from "./elements/Section";
 import { Text } from "./elements/Text";
 import { TextElementConfig } from "./elements/TextElement";
+import { TextField, TextFieldConfig } from "./elements/TextField";
 import { Timer, TimerConfig } from "./elements/Timer";
 
 export type Args<T> = [
@@ -25,6 +26,7 @@ export interface EnrichedWindow extends Window {
   Section: (...args: Args<ContainerElementConfig>) => Section;
   Text: (config?: TextElementConfig) => Text;
   Link: (config?: LinkConfig) => Link;
+  TextField: (config?: TextFieldConfig) => TextField;
   Timer: (config: TimerConfig) => Timer;
 
   moveTo: (

@@ -1,8 +1,8 @@
-export class BaseElement {
-  protected el: HTMLElement;
+export class BaseElement<T extends HTMLElement = HTMLElement> {
+  protected el: T;
 
   constructor(tagName: string) {
-    this.el = document.createElement(tagName);
+    this.el = document.createElement(tagName) as T;
   }
 
   delete() {

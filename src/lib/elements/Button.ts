@@ -4,7 +4,7 @@ export interface ButtonConfig extends TextElementConfig {
   do?: () => void;
 }
 
-export class Button extends TextElement {
+export class Button extends TextElement<HTMLButtonElement> {
   protected clickCallback?: () => void;
 
   constructor(config: ButtonConfig) {

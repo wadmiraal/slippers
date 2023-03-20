@@ -14,7 +14,7 @@ export interface VisualElementConfig {
   height?: number;
 }
 
-export class VisualElement extends BaseElement {
+export class VisualElement<T extends HTMLElement> extends BaseElement<T> {
   constructor(tagName: string, config?: VisualElementConfig) {
     super(tagName);
 

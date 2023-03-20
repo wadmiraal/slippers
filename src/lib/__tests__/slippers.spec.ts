@@ -3,7 +3,12 @@ import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import { ButtonConfig } from "../elements/Button";
 import { KeyboardConfig } from "../elements/Keyboard";
+import { LinkConfig } from "../elements/Link";
 import { Text as TextEl } from "../elements/Text";
+import {
+  TextField as TextFieldEl,
+  TextFieldConfig,
+} from "../elements/TextField";
 import { Timer as TimerEl, TimerConfig } from "../elements/Timer";
 import "../slippers";
 import { EnrichedWindow } from "../types";
@@ -14,8 +19,17 @@ afterEach(() => {
   });
 });
 
-const { App, Button, Keyboard, Text, Link, Paragraph, Section, Timer } =
-  window as unknown as EnrichedWindow;
+const {
+  App,
+  Button,
+  Keyboard,
+  Text,
+  Link,
+  Paragraph,
+  Section,
+  Timer,
+  TextField,
+} = window as unknown as EnrichedWindow;
 
 describe("basic components", () => {
   it("should handle simple interactions", () => {
@@ -128,6 +142,40 @@ describe("basic components", () => {
       )
     );
   }
+});
+
+describe("inputs", () => {
+  it("should correctly handle text inputs", async () => {
+    const user = userEvent.setup({ delay: null });
+    let textInput: TextFieldEl;
+    App((textInput = TextField({ value: "original value" })));
+
+    expect(textInput.value).toEqual("original value");
+    await user.type(screen.getByRole("textbox"), " and type");
+    expect(textInput.value).toEqual("original value and type");
+  });
+
+  it("should correctly handle textareas", async () => {
+    const user = userEvent.setup({ delay: null });
+    let textInput: TextFieldEl;
+    App((textInput = TextField({ large: true, value: "original value" })));
+
+    expect(textInput.value).toEqual("original value");
+    await user.type(screen.getByRole("textbox"), " and type");
+    expect(textInput.value).toEqual("original value and type");
+    expect(textInput.getHTMLElement().tagName).toEqual("TEXTAREA");
+  });
+
+  it("should correctly handle password inputs", async () => {
+    const user = userEvent.setup({ delay: null });
+    let passwordInput: TextFieldEl;
+    App((passwordInput = TextField({ secret: true, value: "original value" })));
+
+    expect(passwordInput.value).toEqual("original value");
+    await user.type(screen.getByTestId("password-input"), " and type");
+    expect(passwordInput.value).toEqual("original value and type");
+    expect(passwordInput.getHTMLElement().type).toEqual("password");
+  });
 });
 
 describe("keyboard", () => {
@@ -282,5 +330,25 @@ describe("configuration, setters, and getters", () => {
 
     expect(config.freq).toEqual(timer.freq);
     expect(config.do).toEqual(timer.do);
+  });
+
+  test("Link", () => {
+    const config: LinkConfig = {
+      to: "http://example.com",
+    };
+    const link = Link(config);
+    expect(link.to).toEqual(config.to);
+  });
+
+  test("TextField", () => {
+    const config: TextFieldConfig = {
+      value: "value",
+      secret: true,
+      large: false,
+    };
+    const field = TextField(config);
+    expect(field.value).toEqual(config.value);
+    expect(field.secret).toEqual(config.secret);
+    expect(field.large).toEqual(config.large);
   });
 });

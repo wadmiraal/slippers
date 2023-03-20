@@ -10,7 +10,7 @@ export interface TextElementConfig extends VisualElementConfig {
   italic?: boolean;
 }
 
-export class TextElement extends VisualElement {
+export class TextElement<T extends HTMLElement> extends VisualElement<T> {
   constructor(tagName: string, config?: TextElementConfig) {
     super(tagName, config);
 

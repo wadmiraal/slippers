@@ -11,7 +11,7 @@ export interface CanvasConfig extends ContainerElementConfig {
   lineWidth?: number;
 }
 
-export class Canvas extends ContainerElement {
+export class Canvas extends ContainerElement<HTMLCanvasElement> {
   protected ctx: CanvasRenderingContext2D;
 
   constructor(...args: Args<CanvasConfig>) {

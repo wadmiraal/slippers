@@ -14,6 +14,7 @@ import { Paragraph } from "./elements/Paragraph";
 import { Section } from "./elements/Section";
 import { Text } from "./elements/Text";
 import { TextElementConfig } from "./elements/TextElement";
+import { TextField, TextFieldConfig } from "./elements/TextField";
 import { Timer, TimerConfig } from "./elements/Timer";
 import { Args, EnrichedWindow } from "./types";
 
@@ -39,6 +40,8 @@ import { Args, EnrichedWindow } from "./types";
 ) => new Section(...args);
 (window as unknown as EnrichedWindow).Timer = (config: TimerConfig) =>
   new Timer(config);
+(window as unknown as EnrichedWindow).TextField = (config?: TextFieldConfig) =>
+  new TextField(config);
 
 // Expose special helper components.
 (window as unknown as EnrichedWindow).moveTo = moveTo;
