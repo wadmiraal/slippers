@@ -376,8 +376,15 @@
     constructor(config) {
       super("A", config);
       if (config == null ? void 0 : config.to) {
-        this.el.setAttribute("href", config.to);
+        this.to = config.to;
       }
+    }
+    set to(href) {
+      this.el.setAttribute("href", href);
+    }
+    get to() {
+      var _a;
+      return (_a = this.el.getAttribute("href")) != null ? _a : "";
     }
   };
 
@@ -411,6 +418,38 @@
   var Text = class extends TextElement {
     constructor(config) {
       super("SPAN", config);
+    }
+  };
+
+  // src/lib/elements/TextField.ts
+  var TextField = class extends VisualElement {
+    constructor(config) {
+      super((config == null ? void 0 : config.large) ? "TEXTAREA" : "INPUT", config);
+      if (config == null ? void 0 : config.value) {
+        this.value = config.value;
+      }
+      if (config == null ? void 0 : config.secret) {
+        this.secret = true;
+      }
+    }
+    set value(text) {
+      this.el.value = text;
+    }
+    get value() {
+      return this.el.value;
+    }
+    set large(_) {
+      throw new Error("You cannot change the TextField's size after the fact.");
+    }
+    get large() {
+      return this.el.tagName === "TEXTAREA";
+    }
+    set secret(isPassword) {
+      this.el.setAttribute("type", isPassword ? "password" : "text");
+      this.el.setAttribute("data-testid", isPassword ? "password-input" : "");
+    }
+    get secret() {
+      return this.el.getAttribute("type") === "password";
     }
   };
 
@@ -491,6 +530,7 @@
   window.Paragraph = (...args) => new Paragraph(...args);
   window.Section = (...args) => new Section(...args);
   window.Timer = (config) => new Timer(config);
+  window.TextField = (config) => new TextField(config);
   window.moveTo = moveTo;
   window.drawLine = drawLine;
   window.drawCircle = drawCircle;
