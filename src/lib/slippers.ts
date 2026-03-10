@@ -1,5 +1,6 @@
 import { App } from "./elements/App";
 import { Button, ButtonConfig } from "./elements/Button";
+import { Image, ImageConfig } from "./elements/Image";
 import {
   Canvas,
   CanvasConfig,
@@ -26,6 +27,8 @@ import { Args, EnrichedWindow } from "./types";
   new Button(config);
 (window as unknown as EnrichedWindow).Canvas = (...args: Args<CanvasConfig>) =>
   new Canvas(...args);
+(window as unknown as EnrichedWindow).Image = (config: ImageConfig) =>
+  new Image(config);
 (window as unknown as EnrichedWindow).Keyboard = (config: KeyboardConfig) =>
   new Keyboard(config);
 (window as unknown as EnrichedWindow).Text = (config?: TextElementConfig) =>
