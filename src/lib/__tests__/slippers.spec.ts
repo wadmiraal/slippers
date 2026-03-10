@@ -2,6 +2,7 @@ import { screen } from "@testing-library/dom";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import { ButtonConfig } from "../elements/Button";
+import { Image as ImageEl, ImageConfig } from "../elements/Image";
 import { KeyboardConfig } from "../elements/Keyboard";
 import { LinkConfig } from "../elements/Link";
 import { Text as TextEl } from "../elements/Text";
@@ -22,6 +23,7 @@ afterEach(() => {
 const {
   App,
   Button,
+  Image,
   Keyboard,
   Text,
   Link,
@@ -142,6 +144,43 @@ describe("basic components", () => {
       )
     );
   }
+});
+
+describe("image", () => {
+  it("should render an image with the given url", () => {
+    App(Image({ url: "photo.jpg" }));
+
+    expect(screen.getByRole("img")).toHaveAttribute("src", "photo.jpg");
+  });
+
+  it("should support an optional description", () => {
+    App(Image({ url: "photo.jpg", description: "A nice photo" }));
+
+    expect(screen.getByAltText("A nice photo")).toBeInTheDocument();
+  });
+
+  it("should allow url and description to be updated after creation", () => {
+    let image: ImageEl;
+    App((image = Image({ url: "before.jpg", description: "Before" })));
+
+    image.url = "after.jpg";
+    image.description = "After";
+
+    expect(screen.getByRole("img")).toHaveAttribute("src", "after.jpg");
+    expect(screen.getByAltText("After")).toBeInTheDocument();
+  });
+
+  it("should support standard visual properties", () => {
+    App(Image({ url: "photo.jpg", width: 200, height: 150, left: 10, top: 20 }));
+
+    expect(screen.getByRole("img")).toHaveStyle({
+      width: "200px",
+      height: "150px",
+      left: "10px",
+      top: "20px",
+      position: "absolute",
+    });
+  });
 });
 
 describe("inputs", () => {
@@ -338,6 +377,17 @@ describe("configuration, setters, and getters", () => {
     };
     const link = Link(config);
     expect(link.to).toEqual(config.to);
+  });
+
+  test("Image", () => {
+    const config: ImageConfig = {
+      url: "photo.jpg",
+      description: "A photo",
+    };
+    const image = Image(config);
+
+    expect(image.url).toEqual(config.url);
+    expect(image.description).toEqual(config.description);
   });
 
   test("TextField", () => {

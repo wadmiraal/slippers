@@ -3,6 +3,7 @@ import { BaseElement } from "./elements/BaseElement";
 import { Button, ButtonConfig } from "./elements/Button";
 import { Canvas, CanvasConfig } from "./elements/Canvas";
 import { ContainerElementConfig } from "./elements/ContainerElement";
+import { Image, ImageConfig } from "./elements/Image";
 import { Keyboard, KeyboardConfig } from "./elements/Keyboard";
 import { Link, LinkConfig } from "./elements/Link";
 import { Paragraph } from "./elements/Paragraph";
@@ -21,6 +22,7 @@ export interface EnrichedWindow extends Window {
   App: (...args: Args<ContainerElementConfig>) => App;
   Button: (config: ButtonConfig) => Button;
   Canvas: (...args: Args<CanvasConfig>) => Canvas;
+  Image: (config: ImageConfig) => Image;
   Keyboard: (config: KeyboardConfig) => Keyboard;
   Paragraph: (...args: Args<ContainerElementConfig>) => Paragraph;
   Section: (...args: Args<ContainerElementConfig>) => Section;
