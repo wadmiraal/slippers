@@ -29,7 +29,7 @@
     return o instanceof BaseElement;
   }
   function isCanvasInstruction(o) {
-    return Array.isArray(o) && typeof o[1] === "number";
+    return Array.isArray(o) && typeof o[0] === "function";
   }
   function isCanvasLineInstruction(o) {
     return o.length === 3;
@@ -320,12 +320,18 @@
     }
     add(...children) {
       children.forEach((child) => {
-        if (isCanvasLineInstruction(child)) {
+        if (child.length === 1) {
+          const el = this.el;
+          this.ctx.clearRect(0, 0, el.width, el.height);
+        } else if (isCanvasLineInstruction(child)) {
           const [fn, x, y] = child;
           fn(x, y, this.ctx);
-        } else {
+        } else if (child.length === 4) {
           const [fn, x, y, r] = child;
           fn(x, y, r, this.ctx);
+        } else {
+          const [fn, x, y, w, h] = child;
+          fn(x, y, w, h, this.ctx);
         }
       });
     }
@@ -339,6 +345,7 @@
     }
     set color(value) {
       this.ctx.strokeStyle = value;
+      this.ctx.fillStyle = value;
     }
     get color() {
       return this.ctx.strokeStyle.toString();
@@ -371,6 +378,23 @@
       ctx.stroke();
     }
     return [drawCircle, x, y, r];
+  }
+  function fillCircle(x, y, r, ctx) {
+    if (ctx) {
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+    return [fillCircle, x, y, r];
+  }
+  function fillRect(x, y, w, h, ctx) {
+    if (ctx) {
+      ctx.fillRect(x, y, w, h);
+    }
+    return [fillRect, x, y, w, h];
+  }
+  function clear() {
+    return [clear];
   }
 
   // src/lib/elements/Keyboard.ts
@@ -582,6 +606,9 @@
   window.moveTo = moveTo;
   window.drawLine = drawLine;
   window.drawCircle = drawCircle;
+  window.fillCircle = fillCircle;
+  window.fillRect = fillRect;
+  window.clear = clear;
   window.left = "left";
   window.center = "center";
   window.right = "right";

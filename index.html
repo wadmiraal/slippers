@@ -161,6 +161,7 @@
             <option value="hangman">hangman.coffee</option>
             <option value="calculator">calculator.coffee</option>
             <option value="word-counter">word-counter.coffee</option>
+            <option value="snake">snake.coffee</option>
           </select>
         </div>
 
@@ -617,7 +618,27 @@ Image(
               the starting point of the next instruction will be the center of
               the drawn circle.
             </li>
+            <li>
+              <code>fillCircle(x, y, radius)</code>: Like
+              <code>drawCircle()</code>, but draws a filled circle using the
+              canvas <code>color</code>.
+            </li>
+            <li>
+              <code>fillRect(x, y, width, height)</code>: Draws a filled
+              rectangle at the given coordinates with the given dimensions,
+              using the canvas <code>color</code>.
+            </li>
+            <li>
+              <code>clear()</code>: Clears the entire canvas. Useful when you
+              want to redraw the canvas from scratch, for example in an
+              animation loop driven by a <code>Timer</code>.
+            </li>
           </ul>
+          <p>
+            You can change the drawing color at any time by setting
+            <code>canvas.color</code> on a canvas variable. This affects both
+            outlines and fills for subsequent drawing instructions.
+          </p>
           <h5>Example</h5>
           <p>Here is an example, drawing a simple stick figure:</p>
           <pre>
