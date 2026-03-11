@@ -275,6 +275,31 @@
     }
   };
 
+  // src/lib/elements/Image.ts
+  var Image = class extends VisualElement {
+    constructor(config) {
+      super("IMG", config);
+      this.url = config.url;
+      if (config.description !== void 0) {
+        this.description = config.description;
+      }
+    }
+    set url(value) {
+      this.el.setAttribute("src", value);
+    }
+    get url() {
+      var _a;
+      return (_a = this.el.getAttribute("src")) != null ? _a : "";
+    }
+    set description(value) {
+      this.el.setAttribute("alt", value);
+    }
+    get description() {
+      var _a;
+      return (_a = this.el.getAttribute("alt")) != null ? _a : "";
+    }
+  };
+
   // src/lib/elements/Canvas.ts
   var Canvas = class extends ContainerElement {
     constructor(...args) {
@@ -524,6 +549,7 @@
   window.App = (...args) => new App(...args);
   window.Button = (config) => new Button(config);
   window.Canvas = (...args) => new Canvas(...args);
+  window.Image = (config) => new Image(config);
   window.Keyboard = (config) => new Keyboard(config);
   window.Text = (config) => new Text(config);
   window.Link = (config) => new Link(config);
