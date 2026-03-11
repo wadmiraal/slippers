@@ -456,6 +456,15 @@
       if (config == null ? void 0 : config.secret) {
         this.secret = true;
       }
+      if (config == null ? void 0 : config.placeholder) {
+        this.placeholder = config.placeholder;
+      }
+      this.el.addEventListener("input", () => {
+        this.changeCallback && this.changeCallback(this.el.value);
+      });
+      if (config == null ? void 0 : config.do) {
+        this.do = config.do;
+      }
     }
     set value(text) {
       this.el.value = text;
@@ -475,6 +484,19 @@
     }
     get secret() {
       return this.el.getAttribute("type") === "password";
+    }
+    set placeholder(text) {
+      this.el.setAttribute("placeholder", text);
+    }
+    get placeholder() {
+      var _a;
+      return (_a = this.el.getAttribute("placeholder")) != null ? _a : "";
+    }
+    set do(callback) {
+      this.changeCallback = callback;
+    }
+    get do() {
+      return this.changeCallback;
     }
   };
 
