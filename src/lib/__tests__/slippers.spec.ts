@@ -215,6 +215,20 @@ describe("inputs", () => {
     expect(passwordInput.value).toEqual("original value and type");
     expect(passwordInput.getHTMLElement().type).toEqual("password");
   });
+
+  it("should call the do callback with the current value on input", async () => {
+    const user = userEvent.setup({ delay: null });
+    const received: string[] = [];
+    App(TextField({ do: (value) => received.push(value) }));
+
+    await user.type(screen.getByRole("textbox"), "hi");
+    expect(received).toEqual(["h", "hi"]);
+  });
+
+  it("should render a placeholder", () => {
+    App(TextField({ placeholder: "Type here..." }));
+    expect(screen.getByPlaceholderText("Type here...")).toBeInTheDocument();
+  });
 });
 
 describe("keyboard", () => {
@@ -395,10 +409,12 @@ describe("configuration, setters, and getters", () => {
       value: "value",
       secret: true,
       large: false,
+      placeholder: "hint",
     };
     const field = TextField(config);
     expect(field.value).toEqual(config.value);
     expect(field.secret).toEqual(config.secret);
     expect(field.large).toEqual(config.large);
+    expect(field.placeholder).toEqual(config.placeholder);
   });
 });

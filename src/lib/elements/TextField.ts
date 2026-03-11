@@ -4,11 +4,15 @@ export interface TextFieldConfig extends VisualElementConfig {
   value?: string;
   large?: boolean;
   secret?: boolean;
+  placeholder?: string;
+  do?: (value: string) => void;
 }
 
 export class TextField extends VisualElement<
   HTMLInputElement | HTMLTextAreaElement
 > {
+  protected changeCallback?: (value: string) => void;
+
   constructor(config?: TextFieldConfig) {
     super(config?.large ? "TEXTAREA" : "INPUT", config);
 
@@ -18,6 +22,18 @@ export class TextField extends VisualElement<
 
     if (config?.secret) {
       this.secret = true;
+    }
+
+    if (config?.placeholder) {
+      this.placeholder = config.placeholder;
+    }
+
+    this.el.addEventListener("input", () => {
+      this.changeCallback && this.changeCallback(this.el.value);
+    });
+
+    if (config?.do) {
+      this.do = config.do;
     }
   }
 
@@ -44,5 +60,21 @@ export class TextField extends VisualElement<
 
   get secret() {
     return this.el.getAttribute("type") === "password";
+  }
+
+  set placeholder(text: string) {
+    this.el.setAttribute("placeholder", text);
+  }
+
+  get placeholder() {
+    return this.el.getAttribute("placeholder") ?? "";
+  }
+
+  set do(callback: TextFieldConfig["do"]) {
+    this.changeCallback = callback;
+  }
+
+  get do(): TextFieldConfig["do"] {
+    return this.changeCallback;
   }
 }
