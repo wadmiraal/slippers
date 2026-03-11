@@ -1,4 +1,4 @@
-# Slippers [![Build](https://github.com/wadmiraal/slippers/actions/workflows/build.yml/badge.svg)](https://github.com/wadmiraal/slippers/actions/workflows/build.yml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=wadmiraal_slippers&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=wadmiraal_slippers)
+# Slippers [![Build](https://github.com/wadmiraal/slippers/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/wadmiraal/slippers/actions/workflows/build.yml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=wadmiraal_slippers&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=wadmiraal_slippers)
 
 Inspired by \_why's [Shoes](http://shoesrb.com/) and [ART && CODE talk](https://vimeo.com/5047563). How can we make programming simple and fun in today's web-dominated world?
 
