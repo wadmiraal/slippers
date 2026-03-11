@@ -4,8 +4,11 @@ import { Image, ImageConfig } from "./elements/Image";
 import {
   Canvas,
   CanvasConfig,
+  clear,
   drawCircle,
   drawLine,
+  fillCircle,
+  fillRect,
   moveTo,
 } from "./elements/Canvas";
 import { ContainerElementConfig } from "./elements/ContainerElement";
@@ -50,6 +53,9 @@ import { Args, EnrichedWindow } from "./types";
 (window as unknown as EnrichedWindow).moveTo = moveTo;
 (window as unknown as EnrichedWindow).drawLine = drawLine;
 (window as unknown as EnrichedWindow).drawCircle = drawCircle;
+(window as unknown as EnrichedWindow).fillCircle = fillCircle;
+(window as unknown as EnrichedWindow).fillRect = fillRect;
+(window as unknown as EnrichedWindow).clear = clear;
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // Expose constants.

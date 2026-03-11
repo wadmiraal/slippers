@@ -47,7 +47,23 @@ export interface EnrichedWindow extends Window {
     r: number,
     ctx?: CanvasRenderingContext2D
   ) => CanvasInstruction;
+  fillCircle: (
+    x: number,
+    y: number,
+    r: number,
+    ctx?: CanvasRenderingContext2D
+  ) => CanvasInstruction;
+  fillRect: (
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    ctx?: CanvasRenderingContext2D
+  ) => CanvasInstruction;
+  clear: () => CanvasInstruction;
 }
+
+export type CanvasClearInstruction = [() => CanvasInstruction];
 
 export type CanvasLineInstruction = [
   (x: number, y: number, ctx: CanvasRenderingContext2D) => void,
@@ -62,4 +78,22 @@ export type CanvasCircleInstruction = [
   number
 ];
 
-export type CanvasInstruction = CanvasLineInstruction | CanvasCircleInstruction;
+export type CanvasRectInstruction = [
+  (
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    ctx: CanvasRenderingContext2D
+  ) => void,
+  number,
+  number,
+  number,
+  number
+];
+
+export type CanvasInstruction =
+  | CanvasClearInstruction
+  | CanvasLineInstruction
+  | CanvasCircleInstruction
+  | CanvasRectInstruction;

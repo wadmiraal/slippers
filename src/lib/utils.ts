@@ -25,7 +25,7 @@ export function isBaseElement<T>(
 export function isCanvasInstruction<T>(
   o: BaseElement | CanvasInstruction | T
 ): o is CanvasInstruction {
-  return Array.isArray(o) && typeof o[1] === "number";
+  return Array.isArray(o) && typeof o[0] === "function";
 }
 
 export function isCanvasLineInstruction(
