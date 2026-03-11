@@ -1,4 +1,4 @@
-import { Args, CanvasInstruction } from "../types";
+import { Args, CanvasCircleInstruction, CanvasInstruction, CanvasRectInstruction } from "../types";
 import {
   handleContainerArgs,
   isCanvasInstruction,
@@ -38,12 +38,18 @@ export class Canvas extends ContainerElement<HTMLCanvasElement> {
 
   add(...children: Array<CanvasInstruction>) {
     children.forEach((child) => {
-      if (isCanvasLineInstruction(child)) {
+      if (child.length === 1) {
+        const el = this.el as HTMLCanvasElement;
+        this.ctx.clearRect(0, 0, el.width, el.height);
+      } else if (isCanvasLineInstruction(child)) {
         const [fn, x, y] = child;
         fn(x, y, this.ctx);
-      } else {
-        const [fn, x, y, r] = child;
+      } else if (child.length === 4) {
+        const [fn, x, y, r] = child as CanvasCircleInstruction;
         fn(x, y, r, this.ctx);
+      } else {
+        const [fn, x, y, w, h] = child as CanvasRectInstruction;
+        fn(x, y, w, h, this.ctx);
       }
     });
   }
@@ -60,6 +66,7 @@ export class Canvas extends ContainerElement<HTMLCanvasElement> {
 
   set color(value: string) {
     this.ctx.strokeStyle = value;
+    this.ctx.fillStyle = value;
   }
 
   get color() {
@@ -111,4 +118,35 @@ export function drawCircle(
     ctx.stroke();
   }
   return [drawCircle, x, y, r];
+}
+
+export function fillCircle(
+  x: number,
+  y: number,
+  r: number,
+  ctx?: CanvasRenderingContext2D
+): CanvasInstruction {
+  if (ctx) {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, 2 * Math.PI);
+    ctx.fill();
+  }
+  return [fillCircle, x, y, r];
+}
+
+export function fillRect(
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  ctx?: CanvasRenderingContext2D
+): CanvasInstruction {
+  if (ctx) {
+    ctx.fillRect(x, y, w, h);
+  }
+  return [fillRect, x, y, w, h];
+}
+
+export function clear(): CanvasInstruction {
+  return [clear];
 }
